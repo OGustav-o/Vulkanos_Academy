@@ -1,0 +1,94 @@
+erDiagram
+    USERS ||--o{ COURSES : "InstructorId"
+    USERS ||--o{ COMMENTS : "UserId"
+    USERS ||--o{ ENROLLMENTS : "UserId"
+    COURSES ||--o{ MODULES : "CourseId"
+    MODULES ||--o{ LESSONS : "ModuleId"
+    LESSONS ||--o{ LESSON_MATERIALS : "LessonId"
+    LESSONS ||--o{ COMMENTS : "LessonId"
+    COMMENTS ||--o{ COMMENTS : "ParentCommentId"
+    COURSES ||--o{ ENROLLMENTS : "CourseId"
+    ENROLLMENTS ||--|{ CERTIFICATES : "CertificateId"
+
+    USERS {
+        UUID Id PK
+        VARCHAR(255) Email UNIQUE
+        VARCHAR(255) PasswordHash
+        VARCHAR(100) FirstName
+        VARCHAR(100) LastName
+        VARCHAR(50) Role
+        TIMESTAMP CreatedAt
+        TIMESTAMP UpdatedAt
+        VARCHAR(255) ExternalId UNIQUE
+        VARCHAR(50) ExternalProvider
+    }
+
+    COURSES {
+        UUID Id PK
+        VARCHAR(255) Title
+        TEXT Description
+        UUID InstructorId FK
+        VARCHAR(255) ThumbnailUrl
+        DECIMAL Price
+        VARCHAR(50) Status
+        TIMESTAMP CreatedAt
+        TIMESTAMP UpdatedAt
+    }
+
+    MODULES {
+        UUID Id PK
+        UUID CourseId FK
+        VARCHAR(255) Title
+        TEXT Description
+        INT Order
+        TIMESTAMP CreatedAt
+        TIMESTAMP UpdatedAt
+    }
+
+    LESSONS {
+        UUID Id PK
+        UUID ModuleId FK
+        VARCHAR(255) Title
+        TEXT Description
+        VARCHAR(255) VideoUrl
+        INT Order
+        TIMESTAMP CreatedAt
+        TIMESTAMP UpdatedAt
+    }
+
+    LESSON_MATERIALS {
+        UUID Id PK
+        UUID LessonId FK
+        VARCHAR(255) Title
+        VARCHAR(255) MaterialUrl
+        VARCHAR(50) MaterialType
+        TIMESTAMP CreatedAt
+    }
+
+    COMMENTS {
+        UUID Id PK
+        UUID LessonId FK
+        UUID UserId FK
+        UUID ParentCommentId FK
+        TEXT Content
+        TIMESTAMP CreatedAt
+        TIMESTAMP UpdatedAt
+        BOOLEAN IsModerated
+    }
+
+    ENROLLMENTS {
+        UUID Id PK
+        UUID UserId FK
+        UUID CourseId FK
+        TIMESTAMP EnrollmentDate
+        TIMESTAMP CompletionDate
+        DECIMAL Progress
+        UUID CertificateId FK
+    }
+
+    CERTIFICATES {
+        UUID Id PK
+        UUID EnrollmentId FK UNIQUE
+        TIMESTAMP IssueDate
+        VARCHAR(255) CertificateUrl
+    }

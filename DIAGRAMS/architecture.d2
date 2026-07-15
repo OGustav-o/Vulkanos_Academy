@@ -1,0 +1,106 @@
+direction: right
+
+Cloud: {
+  Frontend: {
+    shape: browser
+    label: "Frontend\n(Blazor WebAssembly)"
+  }
+
+  Backend: {
+    shape: cloud
+    label: "Backend\n(.NET 10 - API RESTful)"
+
+    API_Gateway: {
+      shape: hexagon
+      label: "API Gateway"
+    }
+
+    Auth_Service: {
+      shape: square
+      label: "Serviço de Autenticação\ne Autorização"
+    }
+
+    Course_Service: {
+      shape: square
+      label: "Serviço de Cursos\ne Conteúdo"
+    }
+
+    User_Profile_Service: {
+      shape: square
+      label: "Serviço de Usuários\ne Perfis"
+    }
+
+    Communication_Service: {
+      shape: square
+      label: "Serviço de Comunicação"
+    }
+
+    Certificate_Service: {
+      shape: square
+      label: "Serviço de Certificados"
+    }
+
+    Metrics_Service: {
+      shape: square
+      label: "Serviço de Métricas\ne Relatórios"
+    }
+  }
+
+  Database: {
+    shape: cylinder
+    label: "Banco de Dados Relacional\n(PostgreSQL/SQL Server)"
+  }
+
+  Object_Storage: {
+    shape: cloud
+    label: "Armazenamento de Objetos\n(Azure Blob/AWS S3)"
+  }
+}
+
+Third_Party_Services: {
+  Google_Auth: {
+    shape: circle
+    label: "Google Auth"
+  }
+
+  Apple_Auth: {
+    shape: circle
+    label: "Apple Auth"
+  }
+
+  Email_Service: {
+    shape: mail
+    label: "Serviço de E-mail"
+  }
+
+  PDF_Generator: {
+    shape: file
+    label: "Gerador de PDF"
+  }
+}
+
+Frontend -> API_Gateway: "Requisições RESTful"
+
+API_Gateway -> Auth_Service: "Autenticação/Autorização"
+API_Gateway -> Course_Service: "Gerenciamento de Cursos"
+API_Gateway -> User_Profile_Service: "Gerenciamento de Usuários"
+API_Gateway -> Communication_Service: "Comentários/Fórum"
+API_Gateway -> Certificate_Service: "Geração de Certificados"
+API_Gateway -> Metrics_Service: "Métricas/Relatórios"
+
+Auth_Service -> Google_Auth: "OAuth2"
+Auth_Service -> Apple_Auth: "OAuth2"
+
+Course_Service -> Database: "CRUD Cursos"
+Course_Service -> Object_Storage: "Upload/Download Mídia"
+
+User_Profile_Service -> Database: "CRUD Usuários"
+
+Communication_Service -> Database: "CRUD Comentários"
+
+Certificate_Service -> Database: "Dados Certificados"
+Certificate_Service -> PDF_Generator: "Gerar PDF"
+
+Metrics_Service -> Database: "Consultas de Métricas"
+
+Email_Service <- Backend: "Notificações"

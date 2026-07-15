@@ -1,0 +1,48 @@
+graph TD
+    subgraph Cloud
+        Frontend["Frontend\n(Blazor WebAssembly)"]
+        subgraph Backend
+            API_Gateway[API Gateway]
+            Auth_Service["Serviço de Autenticação\ne Autorização"]
+            Course_Service["Serviço de Cursos\ne Conteúdo"]
+            User_Profile_Service["Serviço de Usuários\ne Perfis"]
+            Communication_Service["Serviço de Comunicação"]
+            Certificate_Service["Serviço de Certificados"]
+            Metrics_Service["Serviço de Métricas\ne Relatórios"]
+        end
+        Database[("Banco de Dados Relacional\n(PostgreSQL/SQL Server)")]
+        Object_Storage["Armazenamento de Objetos\n(Azure Blob/AWS S3)"]
+    end
+
+    subgraph Third_Party_Services
+        Google_Auth((Google Auth))
+        Apple_Auth((Apple Auth))
+        Email_Service[Serviço de E-mail]
+        PDF_Generator[Gerador de PDF]
+    end
+
+    Frontend -- Requisições RESTful --> API_Gateway
+
+    API_Gateway -- Autenticação/Autorização --> Auth_Service
+    API_Gateway -- Gerenciamento de Cursos --> Course_Service
+    API_Gateway -- Gerenciamento de Usuários --> User_Profile_Service
+    API_Gateway -- Comentários/Fórum --> Communication_Service
+    API_Gateway -- Geração de Certificados --> Certificate_Service
+    API_Gateway -- Métricas/Relatórios --> Metrics_Service
+
+    Auth_Service -- OAuth2 --> Google_Auth
+    Auth_Service -- OAuth2 --> Apple_Auth
+
+    Course_Service -- CRUD Cursos --> Database
+    Course_Service -- Upload/Download Mídia --> Object_Storage
+
+    User_Profile_Service -- CRUD Usuários --> Database
+
+    Communication_Service -- CRUD Comentários --> Database
+
+    Certificate_Service -- Dados Certificados --> Database
+    Certificate_Service -- Gerar PDF --> PDF_Generator
+
+    Metrics_Service -- Consultas de Métricas --> Database
+
+    Backend -- Notificações --> Email_Service

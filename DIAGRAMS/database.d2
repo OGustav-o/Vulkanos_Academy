@@ -1,0 +1,95 @@
+direction: right
+
+User: {
+  Id: UUID {pk}
+  Email: VARCHAR(255) {unique}
+  PasswordHash: VARCHAR(255)
+  FirstName: VARCHAR(100)
+  LastName: VARCHAR(100)
+  Role: ENUM('Aluno', 'Produtor', 'Admin')
+  CreatedAt: TIMESTAMP
+  UpdatedAt: TIMESTAMP
+  ExternalId: VARCHAR(255) {unique}
+  ExternalProvider: VARCHAR(50)
+}
+
+Course: {
+  Id: UUID {pk}
+  Title: VARCHAR(255)
+  Description: TEXT
+  InstructorId: UUID {fk User.Id}
+  ThumbnailUrl: VARCHAR(255)
+  Price: DECIMAL(10, 2)
+  Status: ENUM('Draft', 'Published', 'Archived')
+  CreatedAt: TIMESTAMP
+  UpdatedAt: TIMESTAMP
+}
+
+Module: {
+  Id: UUID {pk}
+  CourseId: UUID {fk Course.Id}
+  Title: VARCHAR(255)
+  Description: TEXT
+  Order: INT
+  CreatedAt: TIMESTAMP
+  UpdatedAt: TIMESTAMP
+}
+
+Lesson: {
+  Id: UUID {pk}
+  ModuleId: UUID {fk Module.Id}
+  Title: VARCHAR(255)
+  Description: TEXT
+  VideoUrl: VARCHAR(255)
+  Order: INT
+  CreatedAt: TIMESTAMP
+  UpdatedAt: TIMESTAMP
+}
+
+LessonMaterial: {
+  Id: UUID {pk}
+  LessonId: UUID {fk Lesson.Id}
+  Title: VARCHAR(255)
+  MaterialUrl: VARCHAR(255)
+  MaterialType: ENUM('PDF', 'Link')
+  CreatedAt: TIMESTAMP
+}
+
+Comment: {
+  Id: UUID {pk}
+  LessonId: UUID {fk Lesson.Id}
+  UserId: UUID {fk User.Id}
+  ParentCommentId: UUID {fk Comment.Id}
+  Content: TEXT
+  CreatedAt: TIMESTAMP
+  UpdatedAt: TIMESTAMP
+  IsModerated: BOOLEAN
+}
+
+Enrollment: {
+  Id: UUID {pk}
+  UserId: UUID {fk User.Id}
+  CourseId: UUID {fk Course.Id}
+  EnrollmentDate: TIMESTAMP
+  CompletionDate: TIMESTAMP
+  Progress: DECIMAL(5, 2)
+  CertificateId: UUID {fk Certificate.Id}
+}
+
+Certificate: {
+  Id: UUID {pk}
+  EnrollmentId: UUID {fk Enrollment.Id} {unique}
+  IssueDate: TIMESTAMP
+  CertificateUrl: VARCHAR(255)
+}
+
+User.Id -> Course.InstructorId
+Course.Id -> Module.CourseId
+Module.Id -> Lesson.ModuleId
+Lesson.Id -> LessonMaterial.LessonId
+Lesson.Id -> Comment.LessonId
+User.Id -> Comment.UserId
+Comment.Id -> Comment.ParentCommentId
+User.Id -> Enrollment.UserId
+Course.Id -> Enrollment.CourseId
+Enrollment.Id -> Certificate.EnrollmentId

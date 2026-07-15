@@ -1,0 +1,94 @@
+classDiagram
+    class User {
+        +UUID Id
+        +VARCHAR Email
+        +VARCHAR PasswordHash
+        +VARCHAR FirstName
+        +VARCHAR LastName
+        +ENUM Role
+        +TIMESTAMP CreatedAt
+        +TIMESTAMP UpdatedAt
+        +VARCHAR ExternalId
+        +VARCHAR ExternalProvider
+    }
+
+    class Course {
+        +UUID Id
+        +VARCHAR Title
+        +TEXT Description
+        +UUID InstructorId
+        +VARCHAR ThumbnailUrl
+        +DECIMAL Price
+        +ENUM Status
+        +TIMESTAMP CreatedAt
+        +TIMESTAMP UpdatedAt
+    }
+
+    class Module {
+        +UUID Id
+        +UUID CourseId
+        +VARCHAR Title
+        +TEXT Description
+        +INT Order
+        +TIMESTAMP CreatedAt
+        +TIMESTAMP UpdatedAt
+    }
+
+    class Lesson {
+        +UUID Id
+        +UUID ModuleId
+        +VARCHAR Title
+        +TEXT Description
+        +VARCHAR VideoUrl
+        +INT Order
+        +TIMESTAMP CreatedAt
+        +TIMESTAMP UpdatedAt
+    }
+
+    class LessonMaterial {
+        +UUID Id
+        +UUID LessonId
+        +VARCHAR Title
+        +VARCHAR MaterialUrl
+        +ENUM MaterialType
+        +TIMESTAMP CreatedAt
+    }
+
+    class Comment {
+        +UUID Id
+        +UUID LessonId
+        +UUID UserId
+        +UUID ParentCommentId
+        +TEXT Content
+        +TIMESTAMP CreatedAt
+        +TIMESTAMP UpdatedAt
+        +BOOLEAN IsModerated
+    }
+
+    class Enrollment {
+        +UUID Id
+        +UUID UserId
+        +UUID CourseId
+        +TIMESTAMP EnrollmentDate
+        +TIMESTAMP CompletionDate
+        +DECIMAL Progress
+        +UUID CertificateId
+    }
+
+    class Certificate {
+        +UUID Id
+        +UUID EnrollmentId
+        +TIMESTAMP IssueDate
+        +VARCHAR CertificateUrl
+    }
+
+    User "1" -- "*" Course : creates
+    User "1" -- "*" Comment : posts
+    User "1" -- "*" Enrollment : enrolls
+    Course "1" -- "*" Module : contains
+    Module "1" -- "*" Lesson : contains
+    Lesson "1" -- "*" LessonMaterial : has
+    Lesson "1" -- "*" Comment : has
+    Comment "*" -- "0..1" Comment : replies to
+    Course "1" -- "*" Enrollment : has
+    Enrollment "1" -- "1" Certificate : issues
