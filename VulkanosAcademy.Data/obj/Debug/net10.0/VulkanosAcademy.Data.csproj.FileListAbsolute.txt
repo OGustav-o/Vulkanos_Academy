@@ -1,0 +1,16 @@
+/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Data/bin/Debug/net10.0/VulkanosAcademy.Data.deps.json
+/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Data/bin/Debug/net10.0/VulkanosAcademy.Data.dll
+/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Data/bin/Debug/net10.0/VulkanosAcademy.Data.pdb
+/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Data/bin/Debug/net10.0/VulkanosAcademy.Domain.dll
+/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Data/bin/Debug/net10.0/VulkanosAcademy.Domain.pdb
+/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Data/obj/Debug/net10.0/VulkanosAcademy.Data.csproj.AssemblyReference.cache
+/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Data/obj/Debug/net10.0/VulkanosAcademy.Data.GeneratedMSBuildEditorConfig.editorconfig
+/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Data/obj/Debug/net10.0/VulkanosAcademy.Data.AssemblyInfoInputs.cache
+/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Data/obj/Debug/net10.0/VulkanosAcademy.Data.AssemblyInfo.cs
+/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Data/obj/Debug/net10.0/VulkanosAcademy.Data.csproj.CoreCompileInputs.cache
+/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Data/obj/Debug/net10.0/VulkanosAcademy.Data.sourcelink.json
+/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Data/obj/Debug/net10.0/Vulkanos.536A4D6E.Up2Date
+/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Data/obj/Debug/net10.0/VulkanosAcademy.Data.dll
+/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Data/obj/Debug/net10.0/refint/VulkanosAcademy.Data.dll
+/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Data/obj/Debug/net10.0/VulkanosAcademy.Data.pdb
+/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Data/obj/Debug/net10.0/ref/VulkanosAcademy.Data.dll

@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="VulkanosAcademy.Api/VulkanosAcademy.Api.csproj" />
+  <Project Path="VulkanosAcademy.Data/VulkanosAcademy.Data.csproj" />
+  <Project Path="VulkanosAcademy.Domain/VulkanosAcademy.Domain.csproj" />
+  <Project Path="VulkanosAcademy.Web/VulkanosAcademy.Web.csproj" />
+</Solution>

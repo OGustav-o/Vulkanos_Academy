@@ -1,0 +1,118 @@
+@page "/dashboard"
+@using VulkanosAcademy.Domain.DTOs
+@inject ICourseService CourseService
+@inject NavigationManager Navigation
+
+<div class="container-fluid mt-4">
+    <div class="row mb-4">
+        <div class="col">
+            <h1>Dashboard - Vulkanos Academy</h1>
+        </div>
+        <div class="col text-end">
+            <button class="btn btn-outline-danger" @onclick="Logout">Sair</button>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Cursos Disponíveis</h5>
+                    <p class="card-text display-4">@(courses?.Count() ?? 0)</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Meus Cursos</h5>
+                    <p class="card-text display-4">0</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Progresso Médio</h5>
+                    <p class="card-text display-4">0%</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Certificados</h5>
+                    <p class="card-text display-4">0</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <h2>Cursos Disponíveis</h2>
+            @if (isLoading)
+            {
+                <div class="text-center">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Carregando...</span>
+                    </div>
+                </div>
+            }
+            else if (courses == null || !courses.Any())
+            {
+                <div class="alert alert-info">
+                    Nenhum curso disponível no momento.
+                </div>
+            }
+            else
+            {
+                <div class="row">
+                    @foreach (var course in courses)
+                    {
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100">
+                                @if (!string.IsNullOrEmpty(course.ThumbnailUrl))
+                                {
+                                    <img src="@course.ThumbnailUrl" class="card-img-top" alt="@course.Title" />
+                                }
+                                <div class="card-body">
+                                    <h5 class="card-title">@course.Title</h5>
+                                    <p class="card-text">@course.Description</p>
+                                    <p class="card-text"><small class="text-muted">Criado em: @course.CreatedAt.ToString("dd/MM/yyyy")</small></p>
+                                </div>
+                                <div class="card-footer">
+                                    <button class="btn btn-primary w-100" @onclick="() => ViewCourse(course.Id)">
+                                        Ver Curso
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private IEnumerable<CourseDto>? courses;
+    private bool isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        courses = await CourseService.GetCoursesAsync();
+        isLoading = false;
+    }
+
+    private void ViewCourse(Guid courseId)
+    {
+        Navigation.NavigateTo($"/course/{courseId}");
+    }
+
+    private async Task Logout()
+    {
+        await CourseService.GetCoursesAsync(); // Placeholder
+        Navigation.NavigateTo("/login");
+    }
+}

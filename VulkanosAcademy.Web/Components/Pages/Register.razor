@@ -1,0 +1,98 @@
+@page "/register"
+@using VulkanosAcademy.Domain.DTOs
+@inject IAuthService AuthService
+@inject NavigationManager Navigation
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-body p-5">
+                    <h2 class="card-title text-center mb-4">Registre-se na Vulkanos Academy</h2>
+
+                    @if (!string.IsNullOrEmpty(errorMessage))
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            @errorMessage
+                        </div>
+                    }
+
+                    @if (!string.IsNullOrEmpty(successMessage))
+                    {
+                        <div class="alert alert-success" role="alert">
+                            @successMessage
+                        </div>
+                    }
+
+                    <form @onsubmit="HandleRegister">
+                        <div class="mb-3">
+                            <label for="firstName" class="form-label">Primeiro Nome</label>
+                            <input type="text" class="form-control" id="firstName" @bind="registerDto.FirstName" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="lastName" class="form-label">Sobrenome</label>
+                            <input type="text" class="form-control" id="lastName" @bind="registerDto.LastName" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">E-mail</label>
+                            <input type="email" class="form-control" id="email" @bind="registerDto.Email" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Senha</label>
+                            <input type="password" class="form-control" id="password" @bind="registerDto.Password" required />
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100" disabled="@isLoading">
+                            @if (isLoading)
+                            {
+                                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                <span>Registrando...</span>
+                            }
+                            else
+                            {
+                                <span>Registrar</span>
+                            }
+                        </button>
+                    </form>
+
+                    <hr class="my-4" />
+
+                    <p class="text-center">
+                        Já tem conta? <a href="/login">Entre aqui</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private CreateUserDto registerDto = new();
+    private string errorMessage = string.Empty;
+    private string successMessage = string.Empty;
+    private bool isLoading = false;
+
+    private async Task HandleRegister()
+    {
+        isLoading = true;
+        errorMessage = string.Empty;
+        successMessage = string.Empty;
+
+        var result = await AuthService.RegisterAsync(registerDto);
+        if (result != null)
+        {
+            successMessage = "Registro realizado com sucesso! Redirecionando para login...";
+            await Task.Delay(2000);
+            Navigation.NavigateTo("/login");
+        }
+        else
+        {
+            errorMessage = "Erro ao registrar. Email pode já estar em uso.";
+        }
+
+        isLoading = false;
+    }
+}
