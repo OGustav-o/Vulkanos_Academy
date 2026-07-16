@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("VulkanosAcademy.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1b03fdbf8564724f6887d977eb8e14109ecae2ea")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b5162d2c8e257f7226b68a1cdf85f522f9c0e8d3")]
 [assembly: System.Reflection.AssemblyProductAttribute("VulkanosAcademy.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("VulkanosAcademy.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

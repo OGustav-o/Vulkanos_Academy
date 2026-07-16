@@ -1,0 +1,164 @@
+@page "/producer/dashboard"
+@using VulkanosAcademy.Domain.DTOs
+@inject ICourseService CourseService
+@inject NavigationManager Navigation
+
+<div class="container-fluid mt-4">
+    <div class="row mb-4">
+        <div class="col">
+            <h1>Dashboard do Produtor - Vulkanos Academy</h1>
+        </div>
+        <div class="col text-end">
+            <button class="btn btn-success" @onclick="ShowCreateCourseModal">+ Novo Curso</button>
+            <button class="btn btn-outline-danger ms-2" @onclick="Logout">Sair</button>
+        </div>
+    </div>
+
+    @if (isLoading)
+    {
+        <div class="text-center">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Carregando...</span>
+            </div>
+        </div>
+    }
+    else if (courses == null || !courses.Any())
+    {
+        <div class="alert alert-info">
+            Você ainda não criou nenhum curso. <a href="#" @onclick="ShowCreateCourseModal">Crie um novo curso agora</a>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var course in courses)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        @if (!string.IsNullOrEmpty(course.ThumbnailUrl))
+                        {
+                            <img src="@course.ThumbnailUrl" class="card-img-top" alt="@course.Title" />
+                        }
+                        else
+                        {
+                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                                <span class="text-muted">Sem imagem</span>
+                            </div>
+                        }
+                        <div class="card-body">
+                            <h5 class="card-title">@course.Title</h5>
+                            <p class="card-text">@course.Description</p>
+                            <p class="card-text"><small class="text-muted">Status: <span class="badge bg-info">@course.Status</span></small></p>
+                            <p class="card-text"><small class="text-muted">Preço: R$ @(course.Price?.ToString("F2") ?? "Gratuito")</small></p>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-primary btn-sm" @onclick="() => EditCourse(course.Id)">Editar</button>
+                            <button class="btn btn-warning btn-sm" @onclick="() => ManageContent(course.Id)">Gerenciar Conteúdo</button>
+                            <button class="btn btn-danger btn-sm" @onclick="() => DeleteCourse(course.Id)">Deletar</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<!-- Modal para criar/editar curso -->
+<div class="modal fade" id="courseModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@(isEditingCourse ? "Editar Curso" : "Novo Curso")</h5>
+                <button type="button" class="btn-close" @onclick="HideCreateCourseModal"></button>
+            </div>
+            <div class="modal-body">
+                <form @onsubmit="SaveCourse">
+                    <div class="mb-3">
+                        <label for="courseTitle" class="form-label">Título do Curso</label>
+                        <input type="text" class="form-control" id="courseTitle" @bind="newCourse.Title" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="courseDescription" class="form-label">Descrição</label>
+                        <textarea class="form-control" id="courseDescription" rows="3" @bind="newCourse.Description" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="coursePrice" class="form-label">Preço (deixe em branco para gratuito)</label>
+                        <input type="number" class="form-control" id="coursePrice" @bind="newCourse.Price" step="0.01" />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Salvar Curso</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private IEnumerable<CourseDto>? courses;
+    private CreateCourseDto newCourse = new();
+    private bool isLoading = true;
+    private bool isEditingCourse = false;
+    private Guid editingCourseId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        courses = await CourseService.GetCoursesAsync();
+        isLoading = false;
+    }
+
+    private void ShowCreateCourseModal()
+    {
+        newCourse = new();
+        isEditingCourse = false;
+        // Aqui você chamaria JavaScript para mostrar o modal Bootstrap
+    }
+
+    private void HideCreateCourseModal()
+    {
+        // Aqui você chamaria JavaScript para esconder o modal Bootstrap
+    }
+
+    private async Task SaveCourse()
+    {
+        if (isEditingCourse)
+        {
+            // Implementar atualização
+        }
+        else
+        {
+            var result = await CourseService.CreateCourseAsync(newCourse);
+            if (result != null)
+            {
+                courses = await CourseService.GetCoursesAsync();
+                HideCreateCourseModal();
+            }
+        }
+    }
+
+    private void EditCourse(Guid courseId)
+    {
+        editingCourseId = courseId;
+        isEditingCourse = true;
+        ShowCreateCourseModal();
+    }
+
+    private void ManageContent(Guid courseId)
+    {
+        Navigation.NavigateTo($"/producer/course/{courseId}/content");
+    }
+
+    private async Task DeleteCourse(Guid courseId)
+    {
+        if (await JSRuntime.InvokeAsync<bool>("confirm", "Tem certeza que deseja deletar este curso?"))
+        {
+            await CourseService.DeleteCourseAsync(courseId);
+            courses = await CourseService.GetCoursesAsync();
+        }
+    }
+
+    private async Task Logout()
+    {
+        Navigation.NavigateTo("/login");
+    }
+
+    @inject IJSRuntime JSRuntime
+}

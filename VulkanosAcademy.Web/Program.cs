@@ -13,6 +13,9 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 // Add Application Services
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ICourseService, CourseService>();
+builder.Services.AddScoped<IModuleService, ModuleService>();
+builder.Services.AddScoped<ILessonService, LessonService>();
+builder.Services.AddScoped<IMaterialService, MaterialService>();
 
 // Add Authentication
 builder.Services.AddAuthorizationCore();
