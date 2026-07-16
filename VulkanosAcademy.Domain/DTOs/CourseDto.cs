@@ -10,6 +10,7 @@ public class CourseDto
     public decimal? Price { get; set; }
     public string Status { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }
+    public UserDto? Instructor { get; set; }
 }
 
 public class CreateCourseDto

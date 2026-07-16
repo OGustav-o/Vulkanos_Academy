@@ -1,0 +1,61 @@
+@using VulkanosAcademy.Domain.DTOs
+
+<div class="progress-container">
+    <div class="progress-header d-flex justify-content-between align-items-center mb-2">
+        <span class="progress-label">@Label</span>
+        <span class="progress-percentage text-orange fw-bold">@Progress%</span>
+    </div>
+    <div class="progress" style="height: @(Height)px;">
+        <div class="progress-bar bg-orange" style="width: @(Progress)%; transition: width 0.3s ease;"></div>
+    </div>
+    @if (ShowMilestones)
+    {
+        <div class="progress-milestones mt-2 d-flex justify-content-between small text-muted">
+            <span>0%</span>
+            <span>25%</span>
+            <span>50%</span>
+            <span>75%</span>
+            <span>100%</span>
+        </div>
+    }
+</div>
+
+<style>
+    .progress-container {
+        width: 100%;
+    }
+    
+    .progress {
+        background-color: #222;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+    
+    .progress-bar {
+        background: linear-gradient(90deg, #FF6600, #FF8C00);
+        transition: width 0.3s ease;
+    }
+    
+    .progress-label {
+        font-size: 0.9rem;
+        color: #ccc;
+    }
+    
+    .progress-milestones {
+        padding: 0 2px;
+    }
+</style>
+
+@code {
+    [Parameter]
+    public decimal Progress { get; set; } = 0;
+
+    [Parameter]
+    public string Label { get; set; } = "Progresso";
+
+    [Parameter]
+    public int Height { get; set; } = 8;
+
+    [Parameter]
+    public bool ShowMilestones { get; set; } = false;
+}

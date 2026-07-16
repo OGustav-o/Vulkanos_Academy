@@ -1,0 +1,190 @@
+@page "/producer/stats"
+@using VulkanosAcademy.Domain.DTOs
+@inject ICourseService CourseService
+@inject IEnrollmentService EnrollmentService
+@inject NavigationManager Navigation
+
+<div class="container-fluid py-4">
+    <div class="row mb-4 align-items-center">
+        <div class="col">
+            <h1 class="display-5 mb-0">ESTATÍSTICAS DOS <span class="text-orange">CURSOS</span></h1>
+            <p class="text-muted">Acompanhe o desempenho e engajamento dos seus alunos</p>
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-outline-primary" @onclick="() => Navigation.NavigateTo('/producer/dashboard')">
+                <span class="bi bi-arrow-left me-2"></span> Voltar
+            </button>
+        </div>
+    </div>
+
+    @if (isLoading)
+    {
+        <div class="text-center py-5">
+            <div class="spinner-border text-orange" role="status">
+                <span class="visually-hidden">Carregando...</span>
+            </div>
+        </div>
+    }
+    else if (courses == null || !courses.Any())
+    {
+        <div class="alert alert-info" role="alert">
+            <span class="bi bi-info-circle me-2"></span>
+            Você ainda não criou nenhum curso.
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var course in courses)
+            {
+                <div class="col-lg-6 mb-4">
+                    <div class="stats-card p-4">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div>
+                                <h5 class="mb-1">@course.Title</h5>
+                                <p class="text-muted small mb-0">@course.Description</p>
+                            </div>
+                            <span class="badge @GetStatusBadgeClass(course.Status)">@course.Status</span>
+                        </div>
+
+                        <hr class="border-secondary" />
+
+                        @{
+                            var stats = courseStats?.FirstOrDefault(s => s.CourseId == course.Id);
+                        }
+
+                        @if (stats != null)
+                        {
+                            <div class="row g-3 mt-2">
+                                <div class="col-6">
+                                    <div class="stat-item">
+                                        <h6 class="text-muted small text-uppercase mb-1">Total de Alunos</h6>
+                                        <h3 class="text-orange mb-0">@stats.TotalEnrollments</h3>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="stat-item">
+                                        <h6 class="text-muted small text-uppercase mb-1">Concluídos</h6>
+                                        <h3 class="text-success mb-0">@stats.CompletedEnrollments</h3>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="stat-item">
+                                        <h6 class="text-muted small text-uppercase mb-1">Progresso Médio</h6>
+                                        <h3 class="text-info mb-0">@stats.AverageProgress.ToString("F1")%</h3>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="stat-item">
+                                        <h6 class="text-muted small text-uppercase mb-1">Taxa de Conclusão</h6>
+                                        <h3 class="text-warning mb-0">@stats.CompletionRate.ToString("F1")%</h3>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-4">
+                                <h6 class="text-muted small text-uppercase mb-2">Progresso Médio dos Alunos</h6>
+                                <div class="progress" style="height: 8px;">
+                                    <div class="progress-bar bg-orange" style="width: @(stats.AverageProgress)%"></div>
+                                </div>
+                            </div>
+
+                            <div class="mt-3 pt-3 border-top border-secondary">
+                                <small class="text-muted">
+                                    <span class="bi bi-info-circle me-1"></span>
+                                    @stats.ActiveStudents aluno(s) ativo(s) no curso
+                                </small>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="alert alert-warning small mb-0">
+                                <span class="bi bi-exclamation-triangle me-1"></span>
+                                Carregando estatísticas...
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<style>
+    .stats-card {
+        background-color: #121212;
+        border: 1px solid #222;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+    }
+    .stats-card:hover {
+        border-color: #FF6600;
+        box-shadow: 0 5px 15px rgba(255, 102, 0, 0.1);
+    }
+
+    .stat-item {
+        padding: 1rem;
+        background-color: rgba(255, 102, 0, 0.05);
+        border-radius: 8px;
+        border: 1px solid rgba(255, 102, 0, 0.1);
+    }
+
+    .progress {
+        background-color: #222;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        background: linear-gradient(90deg, #FF6600, #FF8C00);
+    }
+</style>
+
+@code {
+    private IEnumerable<CourseDto>? courses;
+    private List<CourseStatsDto>? courseStats = new();
+    private bool isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        isLoading = true;
+        try
+        {
+            courses = await CourseService.GetCoursesAsync();
+            
+            if (courses != null)
+            {
+                courseStats = new List<CourseStatsDto>();
+                foreach (var course in courses)
+                {
+                    var stats = await EnrollmentService.GetCourseStatsAsync(course.Id);
+                    if (stats != null)
+                    {
+                        courseStats.Add(stats);
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao carregar estatísticas: {ex.Message}");
+        }
+        isLoading = false;
+    }
+
+    private string GetStatusBadgeClass(string status)
+    {
+        return status switch
+        {
+            "Published" => "bg-success",
+            "Draft" => "bg-warning text-dark",
+            "Archived" => "bg-secondary",
+            _ => "bg-secondary"
+        };
+    }
+}

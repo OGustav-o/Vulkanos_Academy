@@ -3,6 +3,8 @@
 @inject ILessonService LessonService
 @inject IModuleService ModuleService
 @inject IMaterialService MaterialService
+@inject ICommentService CommentService
+@inject IEnrollmentService EnrollmentService
 @inject NavigationManager Navigation
 @inject IJSRuntime JSRuntime
 @inject ICourseService CourseService
@@ -108,10 +110,69 @@
                                 </div>
                             </form>
                         </div>
-                        <div class="text-center py-4 text-muted">
-                            <span class="bi bi-chat-left-text display-4 d-block mb-2"></span>
-                            <p>Seção de comentários em desenvolvimento. Em breve você poderá interagir com outros alunos!</p>
-                        </div>
+                        @if (!comments.Any())
+                        {
+                            <div class="text-center py-4 text-muted">
+                                <span class="bi bi-chat-left-text display-4 d-block mb-2"></span>
+                                <p>Nenhum comentário ainda. Seja o primeiro a comentar!</p>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="comments-list">
+                                @foreach (var comment in comments.Where(c => c.ParentCommentId == null).OrderByDescending(c => c.CreatedAt))
+                                {
+                                    <div class="comment-item p-3 mb-3 border rounded bg-dark">
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                            <div>
+                                                <h6 class="mb-0">@comment.User?.FirstName @comment.User?.LastName</h6>
+                                                <small class="text-muted">@comment.CreatedAt.ToString("dd/MM/yyyy HH:mm")</small>
+                                            </div>
+                                            @if (comment.IsModerated)
+                                            {
+                                                <span class="badge bg-warning text-dark">Moderado</span>
+                                            }
+                                        </div>
+                                        <p class="mb-2">@comment.Content</p>
+                                        <button class="btn btn-link btn-sm text-muted" @onclick="() => ToggleReplyForm(comment.Id)">
+                                            <span class="bi bi-reply me-1"></span> Responder
+                                        </button>
+
+                                        @{
+                                            var replies = comments.Where(c => c.ParentCommentId == comment.Id).OrderBy(c => c.CreatedAt).ToList();
+                                        }
+                                        @if (replies.Any())
+                                        {
+                                            <div class="replies-section ms-4 mt-3">
+                                                @foreach (var reply in replies)
+                                                {
+                                                    <div class="reply-item p-2 mb-2 border-start border-orange bg-dark">
+                                                        <div class="d-flex justify-content-between align-items-start mb-1">
+                                                            <div>
+                                                                <h6 class="mb-0 small">@reply.User?.FirstName @reply.User?.LastName</h6>
+                                                                <small class="text-muted">@reply.CreatedAt.ToString("dd/MM/yyyy HH:mm")</small>
+                                                            </div>
+                                                        </div>
+                                                        <p class="mb-0 small">@reply.Content</p>
+                                                    </div>
+                                                }
+                                            </div>
+                                        }
+
+                                        @if (replyingToCommentId == comment.Id)
+                                        {
+                                            <form @onsubmit="() => AddReply(comment.Id)" class="reply-form mt-2 p-2 bg-dark rounded">
+                                                <textarea class="form-control form-control-sm mb-2" rows="2" @bind="newReplyText" placeholder="Escreva sua resposta..."></textarea>
+                                                <div class="d-flex justify-content-end gap-2">
+                                                    <button type="button" class="btn btn-sm btn-secondary" @onclick="() => ToggleReplyForm(null)">Cancelar</button>
+                                                    <button type="submit" class="btn btn-sm btn-primary" disabled="@string.IsNullOrWhiteSpace(newReplyText)">Responder</button>
+                                                </div>
+                                            </form>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
@@ -235,10 +296,13 @@
     private IEnumerable<LessonMaterialDto> materials = new List<LessonMaterialDto>();
     private IEnumerable<ModuleDto> modules = new List<ModuleDto>();
     private List<LessonDto> allLessons = new();
+    private List<CommentDto> comments = new();
     private bool isLoading = true;
     private int currentLessonIndex = 0;
     private string currentModuleTitle = "";
     private string newCommentText = "";
+    private string newReplyText = "";
+    private Guid? replyingToCommentId = null;
 
     protected override async Task OnParametersSetAsync()
     {
@@ -264,7 +328,13 @@
             
             currentLessonIndex = allLessons.FindIndex(x => x.Id == LessonId);
             currentModuleTitle = modules.FirstOrDefault(x => x.Id == ModuleId)?.Title ?? "";
-        } catch (Exception) { }
+            
+            // Carregar comentários
+            var loadedComments = await CommentService.GetCommentsByLessonAsync(LessonId);
+            comments = loadedComments?.ToList() ?? new List<CommentDto>();
+        } catch (Exception ex) {
+            Console.WriteLine($"Erro ao carregar dados da aula: {ex.Message}");
+        }
         isLoading = false;
     }
 
@@ -286,10 +356,46 @@
     private async Task AddComment()
     {
         if (!string.IsNullOrWhiteSpace(newCommentText)) {
-            // TODO: Implementar chamada para o serviço de comentários
-            // var comment = await CommentService.CreateCommentAsync(new CreateCommentDto { LessonId = LessonId, Content = newCommentText });
-            newCommentText = "";
-            // await LoadLessonData();
+            var createCommentDto = new CreateCommentDto
+            {
+                LessonId = LessonId,
+                Content = newCommentText
+            };
+            
+            var comment = await CommentService.CreateCommentAsync(createCommentDto);
+            if (comment != null) {
+                comments.Add(comment);
+                newCommentText = "";
+                StateHasChanged();
+            }
         }
+    }
+
+    private async Task AddReply(Guid parentCommentId)
+    {
+        if (!string.IsNullOrWhiteSpace(newReplyText)) {
+            var createCommentDto = new CreateCommentDto
+            {
+                LessonId = LessonId,
+                ParentCommentId = parentCommentId,
+                Content = newReplyText
+            };
+            
+            var reply = await CommentService.CreateCommentAsync(createCommentDto);
+            if (reply != null) {
+                var parentComment = comments.FirstOrDefault(c => c.Id == parentCommentId);
+                if (parentComment != null) {
+                    parentComment.Replies.Add(reply);
+                }
+                newReplyText = "";
+                replyingToCommentId = null;
+                StateHasChanged();
+            }
+        }
+    }
+
+    private void ToggleReplyForm(Guid? commentId)
+    {
+        replyingToCommentId = replyingToCommentId == commentId ? null : commentId;
     }
 }
