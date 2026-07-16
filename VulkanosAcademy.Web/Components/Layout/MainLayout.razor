@@ -6,8 +6,17 @@
     </div>
 
     <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+        <div class="top-row px-4 navbar navbar-dark">
+            <div class="ms-auto">
+                <AuthorizeView>
+                    <Authorized>
+                        <span class="text-white me-3">Olá, @context.User.Identity?.Name</span>
+                    </Authorized>
+                    <NotAuthorized>
+                        <a href="/login" class="btn btn-outline-primary btn-sm">Login</a>
+                    </NotAuthorized>
+                </AuthorizeView>
+            </div>
         </div>
 
         <article class="content px-4">
@@ -17,7 +26,44 @@
 </div>
 
 <div id="blazor-error-ui" data-nosnippet>
-    An unhandled error has occurred.
-    <a href="." class="reload">Reload</a>
+    Ocorreu um erro inesperado.
+    <a href="." class="reload">Recarregar</a>
     <span class="dismiss">🗙</span>
 </div>
+
+<style>
+    .top-row {
+        background-color: #0a0a0a !important;
+        border-bottom: 1px solid #222;
+        height: 3.5rem;
+        display: flex;
+        align-items: center;
+    }
+    
+    main {
+        flex: 1;
+    }
+
+    .sidebar {
+        width: 250px;
+        height: 100vh;
+        position: sticky;
+        top: 0;
+    }
+
+    .page {
+        display: flex;
+        flex-direction: row;
+    }
+
+    @media (max-width: 767.98px) {
+        .page {
+            flex-direction: column;
+        }
+        .sidebar {
+            width: 100%;
+            height: auto;
+            position: relative;
+        }
+    }
+</style>

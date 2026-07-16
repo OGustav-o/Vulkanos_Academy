@@ -2,30 +2,38 @@
 @using VulkanosAcademy.Domain.DTOs
 @inject ICourseService CourseService
 @inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
 
-<div class="container-fluid mt-4">
-    <div class="row mb-4">
+<div class="container-fluid py-4">
+    <div class="row mb-5 align-items-center">
         <div class="col">
-            <h1>Dashboard do Produtor - Vulkanos Academy</h1>
+            <h1 class="display-5 mb-0">PAINEL DO <span class="text-orange">PRODUTOR</span></h1>
+            <p class="text-muted">Gerencie seus cursos e conteúdos</p>
         </div>
-        <div class="col text-end">
-            <button class="btn btn-success" @onclick="ShowCreateCourseModal">+ Novo Curso</button>
-            <button class="btn btn-outline-danger ms-2" @onclick="Logout">Sair</button>
+        <div class="col-auto">
+            <button class="btn btn-primary" @onclick="ShowCreateCourseModal">
+                <span class="bi bi-plus-lg me-2"></span> NOVO CURSO
+            </button>
         </div>
     </div>
 
     @if (isLoading)
     {
-        <div class="text-center">
-            <div class="spinner-border" role="status">
+        <div class="text-center py-5">
+            <div class="spinner-border text-orange" role="status">
                 <span class="visually-hidden">Carregando...</span>
             </div>
         </div>
     }
     else if (courses == null || !courses.Any())
     {
-        <div class="alert alert-info">
-            Você ainda não criou nenhum curso. <a href="#" @onclick="ShowCreateCourseModal">Crie um novo curso agora</a>
+        <div class="empty-state text-center py-5">
+            <div class="mb-3">
+                <span class="bi bi-folder-plus display-1 text-muted"></span>
+            </div>
+            <h4>Você ainda não criou nenhum curso</h4>
+            <p class="text-muted">Comece a compartilhar seu conhecimento hoje mesmo.</p>
+            <button class="btn btn-primary mt-2" @onclick="ShowCreateCourseModal">CRIAR MEU PRIMEIRO CURSO</button>
         </div>
     }
     else
@@ -33,28 +41,38 @@
         <div class="row">
             @foreach (var course in courses)
             {
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100">
-                        @if (!string.IsNullOrEmpty(course.ThumbnailUrl))
-                        {
-                            <img src="@course.ThumbnailUrl" class="card-img-top" alt="@course.Title" />
-                        }
-                        else
-                        {
-                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
-                                <span class="text-muted">Sem imagem</span>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="producer-course-card">
+                        <div class="course-thumb">
+                            @if (!string.IsNullOrEmpty(course.ThumbnailUrl))
+                            {
+                                <img src="@course.ThumbnailUrl" alt="@course.Title" />
+                            }
+                            else
+                            {
+                                <div class="thumb-placeholder d-flex align-items-center justify-content-center">
+                                    <span class="bi bi-image text-muted"></span>
+                                </div>
+                            }
+                            <div class="status-badge @(course.Status == "Published" ? "bg-success" : "bg-warning")">
+                                @(course.Status == "Published" ? "PUBLICADO" : "RASCUNHO")
                             </div>
-                        }
-                        <div class="card-body">
-                            <h5 class="card-title">@course.Title</h5>
-                            <p class="card-text">@course.Description</p>
-                            <p class="card-text"><small class="text-muted">Status: <span class="badge bg-info">@course.Status</span></small></p>
-                            <p class="card-text"><small class="text-muted">Preço: R$ @(course.Price?.ToString("F2") ?? "Gratuito")</small></p>
                         </div>
-                        <div class="card-footer">
-                            <button class="btn btn-primary btn-sm" @onclick="() => EditCourse(course.Id)">Editar</button>
-                            <button class="btn btn-warning btn-sm" @onclick="() => ManageContent(course.Id)">Gerenciar Conteúdo</button>
-                            <button class="btn btn-danger btn-sm" @onclick="() => DeleteCourse(course.Id)">Deletar</button>
+                        <div class="p-3">
+                            <h5 class="mb-1 text-white">@course.Title</h5>
+                            <p class="text-muted small mb-3">@(course.Description.Length > 80 ? course.Description.Substring(0, 80) + "..." : course.Description)</p>
+                            
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-dark btn-sm flex-grow-1" @onclick="() => EditCourse(course.Id)">
+                                    <span class="bi bi-pencil-square me-1"></span> Editar
+                                </button>
+                                <button class="btn btn-orange-outline btn-sm flex-grow-1" @onclick="() => ManageContent(course.Id)">
+                                    <span class="bi bi-collection-play me-1"></span> Conteúdo
+                                </button>
+                                <button class="btn btn-outline-danger btn-sm" @onclick="() => DeleteCourse(course.Id)">
+                                    <span class="bi bi-trash"></span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -65,32 +83,84 @@
 
 <!-- Modal para criar/editar curso -->
 <div class="modal fade" id="courseModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">@(isEditingCourse ? "Editar Curso" : "Novo Curso")</h5>
-                <button type="button" class="btn-close" @onclick="HideCreateCourseModal"></button>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark border-secondary">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title text-orange">@(isEditingCourse ? "EDITAR CURSO" : "NOVO CURSO")</h5>
+                <button type="button" class="btn-close btn-close-white" @onclick="HideCreateCourseModal"></button>
             </div>
             <div class="modal-body">
                 <form @onsubmit="SaveCourse">
                     <div class="mb-3">
-                        <label for="courseTitle" class="form-label">Título do Curso</label>
-                        <input type="text" class="form-control" id="courseTitle" @bind="newCourse.Title" required />
+                        <label for="courseTitle" class="form-label small text-muted">Título do Curso</label>
+                        <input type="text" class="form-control" id="courseTitle" @bind="newCourse.Title" required placeholder="Ex: Masterclass de C#" />
                     </div>
                     <div class="mb-3">
-                        <label for="courseDescription" class="form-label">Descrição</label>
-                        <textarea class="form-control" id="courseDescription" rows="3" @bind="newCourse.Description" required></textarea>
+                        <label for="courseDescription" class="form-label small text-muted">Descrição</label>
+                        <textarea class="form-control" id="courseDescription" rows="3" @bind="newCourse.Description" required placeholder="Descreva o que os alunos aprenderão..."></textarea>
                     </div>
                     <div class="mb-3">
-                        <label for="coursePrice" class="form-label">Preço (deixe em branco para gratuito)</label>
-                        <input type="number" class="form-control" id="coursePrice" @bind="newCourse.Price" step="0.01" />
+                        <label for="coursePrice" class="form-label small text-muted">Preço (R$)</label>
+                        <input type="number" class="form-control" id="coursePrice" @bind="newCourse.Price" step="0.01" placeholder="0,00" />
+                        <small class="text-muted">Deixe 0 para cursos gratuitos</small>
                     </div>
-                    <button type="submit" class="btn btn-primary">Salvar Curso</button>
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-primary">SALVAR CURSO</button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    .producer-course-card {
+        background-color: #121212;
+        border: 1px solid #222;
+        border-radius: 12px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    .producer-course-card:hover {
+        border-color: #FF6600;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    }
+    
+    .course-thumb {
+        height: 160px;
+        position: relative;
+        background-color: #1a1a1a;
+    }
+    .course-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .status-badge {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: #000;
+    }
+    
+    .btn-orange-outline {
+        color: #FF6600;
+        border: 1px solid #FF6600;
+    }
+    .btn-orange-outline:hover {
+        background-color: #FF6600;
+        color: #000;
+    }
+    
+    .modal-content {
+        box-shadow: 0 0 30px rgba(0,0,0,0.8);
+    }
+</style>
 
 @code {
     private IEnumerable<CourseDto>? courses;
@@ -101,6 +171,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+        // No futuro, usar GetCoursesByInstructorAsync
         courses = await CourseService.GetCoursesAsync();
         isLoading = false;
     }
@@ -109,36 +180,51 @@
     {
         newCourse = new();
         isEditingCourse = false;
-        // Aqui você chamaria JavaScript para mostrar o modal Bootstrap
+        ShowModal("courseModal");
     }
 
     private void HideCreateCourseModal()
     {
-        // Aqui você chamaria JavaScript para esconder o modal Bootstrap
+        HideModal("courseModal");
     }
 
     private async Task SaveCourse()
     {
         if (isEditingCourse)
         {
-            // Implementar atualização
+            var updateDto = new UpdateCourseDto
+            {
+                Title = newCourse.Title,
+                Description = newCourse.Description,
+                Price = newCourse.Price
+            };
+            await CourseService.UpdateCourseAsync(editingCourseId, updateDto);
         }
         else
         {
-            var result = await CourseService.CreateCourseAsync(newCourse);
-            if (result != null)
-            {
-                courses = await CourseService.GetCoursesAsync();
-                HideCreateCourseModal();
-            }
+            await CourseService.CreateCourseAsync(newCourse);
         }
+        
+        courses = await CourseService.GetCoursesAsync();
+        HideCreateCourseModal();
     }
 
     private void EditCourse(Guid courseId)
     {
-        editingCourseId = courseId;
-        isEditingCourse = true;
-        ShowCreateCourseModal();
+        var course = courses?.FirstOrDefault(c => c.Id == courseId);
+        if (course != null)
+        {
+            newCourse = new()
+            {
+                Title = course.Title,
+                Description = course.Description,
+                Price = course.Price,
+                ThumbnailUrl = course.ThumbnailUrl
+            };
+            editingCourseId = courseId;
+            isEditingCourse = true;
+            ShowModal("courseModal");
+        }
     }
 
     private void ManageContent(Guid courseId)
@@ -148,17 +234,20 @@
 
     private async Task DeleteCourse(Guid courseId)
     {
-        if (await JSRuntime.InvokeAsync<bool>("confirm", "Tem certeza que deseja deletar este curso?"))
+        if (await JSRuntime.InvokeAsync<bool>("confirm", "Tem certeza que deseja deletar este curso? Esta ação não pode ser desfeita."))
         {
             await CourseService.DeleteCourseAsync(courseId);
             courses = await CourseService.GetCoursesAsync();
         }
     }
 
-    private async Task Logout()
+    private void ShowModal(string modalId)
     {
-        Navigation.NavigateTo("/login");
+        JSRuntime.InvokeVoidAsync("eval", $"new bootstrap.Modal(document.getElementById('{modalId}')).show()");
     }
 
-    @inject IJSRuntime JSRuntime
+    private void HideModal(string modalId)
+    {
+        JSRuntime.InvokeVoidAsync("eval", $"bootstrap.Modal.getInstance(document.getElementById('{modalId}'))?.hide()");
+    }
 }

@@ -3,97 +3,198 @@
 @inject ICourseService CourseService
 @inject NavigationManager Navigation
 
-<div class="container-fluid mt-4">
-    <div class="row mb-4">
+<div class="container-fluid py-4">
+    <div class="row mb-5 align-items-center">
         <div class="col">
-            <h1>Dashboard - Vulkanos Academy</h1>
-        </div>
-        <div class="col text-end">
-            <button class="btn btn-outline-danger" @onclick="Logout">Sair</button>
+            <h1 class="display-5 mb-0">BEM-VINDO À <span class="text-orange">VULKANOS ACADEMY</span></h1>
+            <p class="text-muted">Continue sua jornada de aprendizado</p>
         </div>
     </div>
 
-    <div class="row mb-4">
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Cursos Disponíveis</h5>
-                    <p class="card-text display-4">@(courses?.Count() ?? 0)</p>
+    <div class="row mb-5">
+        <div class="col-md-3 mb-3">
+            <div class="stats-card p-4 h-100">
+                <div class="stats-icon mb-2">
+                    <span class="bi bi-play-circle-fill"></span>
                 </div>
+                <h6 class="text-muted text-uppercase small">Cursos Ativos</h6>
+                <h2 class="mb-0">@(courses?.Count() ?? 0)</h2>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Meus Cursos</h5>
-                    <p class="card-text display-4">0</p>
+        <div class="col-md-3 mb-3">
+            <div class="stats-card p-4 h-100">
+                <div class="stats-icon mb-2">
+                    <span class="bi bi-check-circle-fill"></span>
                 </div>
+                <h6 class="text-muted text-uppercase small">Concluídos</h6>
+                <h2 class="mb-0">0</h2>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Progresso Médio</h5>
-                    <p class="card-text display-4">0%</p>
+        <div class="col-md-3 mb-3">
+            <div class="stats-card p-4 h-100">
+                <div class="stats-icon mb-2">
+                    <span class="bi bi-clock-fill"></span>
                 </div>
+                <h6 class="text-muted text-uppercase small">Horas de Estudo</h6>
+                <h2 class="mb-0">0h</h2>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Certificados</h5>
-                    <p class="card-text display-4">0</p>
+        <div class="col-md-3 mb-3">
+            <div class="stats-card p-4 h-100">
+                <div class="stats-icon mb-2">
+                    <span class="bi bi-award-fill"></span>
                 </div>
+                <h6 class="text-muted text-uppercase small">Certificados</h6>
+                <h2 class="mb-0">0</h2>
             </div>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-12">
-            <h2>Cursos Disponíveis</h2>
-            @if (isLoading)
+    <div class="section-header d-flex justify-content-between align-items-center mb-4">
+        <h3 class="mb-0">MEUS CURSOS</h3>
+        <a href="/courses" class="btn btn-outline-primary btn-sm">Explorar Tudo</a>
+    </div>
+
+    @if (isLoading)
+    {
+        <div class="text-center py-5">
+            <div class="spinner-border text-orange" role="status">
+                <span class="visually-hidden">Carregando...</span>
+            </div>
+        </div>
+    }
+    else if (courses == null || !courses.Any())
+    {
+        <div class="empty-state text-center py-5">
+            <div class="mb-3">
+                <span class="bi bi-journal-x display-1 text-muted"></span>
+            </div>
+            <h4>Nenhum curso encontrado</h4>
+            <p class="text-muted">Você ainda não está matriculado em nenhum curso.</p>
+            <button class="btn btn-primary mt-2">EXPLORAR CURSOS</button>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var course in courses)
             {
-                <div class="text-center">
-                    <div class="spinner-border" role="status">
-                        <span class="visually-hidden">Carregando...</span>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="course-card h-100" @onclick="() => ViewCourse(course.Id)">
+                        <div class="course-thumb">
+                            @if (!string.IsNullOrEmpty(course.ThumbnailUrl))
+                            {
+                                <img src="@course.ThumbnailUrl" alt="@course.Title" />
+                            }
+                            else
+                            {
+                                <div class="thumb-placeholder d-flex align-items-center justify-content-center">
+                                    <span class="bi bi-mortarboard display-4"></span>
+                                </div>
+                            }
+                            <div class="course-overlay">
+                                <span class="btn btn-primary btn-sm">CONTINUAR</span>
+                            </div>
+                        </div>
+                        <div class="course-body p-3">
+                            <h5 class="course-title mb-2">@course.Title</h5>
+                            <p class="course-desc text-muted small mb-3">@course.Description</p>
+                            <div class="progress mb-2" style="height: 6px;">
+                                <div class="progress-bar bg-orange" style="width: 35%"></div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                <span class="small text-muted">35% Concluído</span>
+                                <span class="small text-orange font-weight-bold">R$ @(course.Price?.ToString("F2") ?? "Grátis")</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             }
-            else if (courses == null || !courses.Any())
-            {
-                <div class="alert alert-info">
-                    Nenhum curso disponível no momento.
-                </div>
-            }
-            else
-            {
-                <div class="row">
-                    @foreach (var course in courses)
-                    {
-                        <div class="col-md-4 mb-4">
-                            <div class="card h-100">
-                                @if (!string.IsNullOrEmpty(course.ThumbnailUrl))
-                                {
-                                    <img src="@course.ThumbnailUrl" class="card-img-top" alt="@course.Title" />
-                                }
-                                <div class="card-body">
-                                    <h5 class="card-title">@course.Title</h5>
-                                    <p class="card-text">@course.Description</p>
-                                    <p class="card-text"><small class="text-muted">Criado em: @course.CreatedAt.ToString("dd/MM/yyyy")</small></p>
-                                </div>
-                                <div class="card-footer">
-                                    <button class="btn btn-primary w-100" @onclick="() => ViewCourse(course.Id)">
-                                        Ver Curso
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    }
-                </div>
-            }
         </div>
-    </div>
+    }
 </div>
+
+<style>
+    .stats-card {
+        background-color: #121212;
+        border: 1px solid #222;
+        border-radius: 12px;
+        transition: border-color 0.3s ease;
+    }
+    .stats-card:hover {
+        border-color: #FF6600;
+    }
+    .stats-icon {
+        color: #FF6600;
+        font-size: 1.5rem;
+    }
+    
+    .course-card {
+        background-color: #121212;
+        border: 1px solid #222;
+        border-radius: 12px;
+        overflow: hidden;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    .course-card:hover {
+        transform: translateY(-5px);
+        border-color: #FF6600;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    }
+    
+    .course-thumb {
+        height: 180px;
+        position: relative;
+        background-color: #1a1a1a;
+        overflow: hidden;
+    }
+    .course-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .thumb-placeholder {
+        height: 100%;
+        color: #333;
+    }
+    
+    .course-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    .course-card:hover .course-overlay {
+        opacity: 1;
+    }
+    
+    .course-title {
+        font-size: 1.1rem;
+        color: #fff;
+    }
+    .course-desc {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    
+    .progress {
+        background-color: #222;
+    }
+    
+    .font-weight-bold {
+        font-weight: 700;
+    }
+</style>
 
 @code {
     private IEnumerable<CourseDto>? courses;
@@ -108,11 +209,5 @@
     private void ViewCourse(Guid courseId)
     {
         Navigation.NavigateTo($"/course/{courseId}");
-    }
-
-    private async Task Logout()
-    {
-        await CourseService.GetCoursesAsync(); // Placeholder
-        Navigation.NavigateTo("/login");
     }
 }

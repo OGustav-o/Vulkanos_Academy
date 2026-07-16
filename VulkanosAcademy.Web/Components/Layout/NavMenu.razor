@@ -1,6 +1,6 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿<div class="top-row ps-3 navbar navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">VulkanosAcademy.Web</a>
+        <a class="navbar-brand text-orange font-weight-bold" href="">VULKANOS ACADEMY</a>
     </div>
 </div>
 
@@ -9,22 +9,43 @@
 <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
     <nav class="nav flex-column">
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+            <NavLink class="nav-link" href="/dashboard" Match="NavLinkMatch.All">
+                <span class="bi bi-speedometer2" aria-hidden="true"></span> Dashboard
             </NavLink>
         </div>
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
+        <AuthorizeView Roles="Producer,Admin">
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="/producer/dashboard">
+                    <span class="bi bi-mortarboard-fill" aria-hidden="true"></span> Meus Cursos
+                </NavLink>
+            </div>
+        </AuthorizeView>
 
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="weather">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
+            <NavLink class="nav-link" href="/profile">
+                <span class="bi bi-person-fill" aria-hidden="true"></span> Perfil
             </NavLink>
         </div>
     </nav>
 </div>
 
+<style>
+    .text-orange {
+        color: #FF6600 !important;
+    }
+    .font-weight-bold {
+        font-weight: bold;
+    }
+    .nav-link {
+        color: #ffffff !important;
+    }
+    .nav-link:hover {
+        color: #FF6600 !important;
+        background-color: rgba(255, 102, 0, 0.1);
+    }
+    .nav-link.active {
+        background-color: #FF6600 !important;
+        color: #000000 !important;
+    }
+</style>

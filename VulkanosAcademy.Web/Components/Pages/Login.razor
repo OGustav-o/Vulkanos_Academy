@@ -1,56 +1,79 @@
 @page "/login"
+@layout EmptyLayout
 @using VulkanosAcademy.Domain.DTOs
 @inject IAuthService AuthService
 @inject NavigationManager Navigation
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow">
-                <div class="card-body p-5">
-                    <h2 class="card-title text-center mb-4">Entrar na Vulkanos Academy</h2>
+<div class="login-container d-flex align-items-center justify-content-center">
+    <div class="login-card p-4">
+        <div class="text-center mb-4">
+            <h1 class="text-orange font-weight-bold">VULKANOS ACADEMY</h1>
+            <p class="text-muted">Acesse sua conta para continuar</p>
+        </div>
 
-                    @if (!string.IsNullOrEmpty(errorMessage))
-                    {
-                        <div class="alert alert-danger" role="alert">
-                            @errorMessage
-                        </div>
-                    }
-
-                    <form @onsubmit="HandleLogin">
-                        <div class="mb-3">
-                            <label for="email" class="form-label">E-mail</label>
-                            <input type="email" class="form-control" id="email" @bind="loginDto.Email" required />
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Senha</label>
-                            <input type="password" class="form-control" id="password" @bind="loginDto.Password" required />
-                        </div>
-
-                        <button type="submit" class="btn btn-primary w-100" disabled="@isLoading">
-                            @if (isLoading)
-                            {
-                                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                                <span>Entrando...</span>
-                            }
-                            else
-                            {
-                                <span>Entrar</span>
-                            }
-                        </button>
-                    </form>
-
-                    <hr class="my-4" />
-
-                    <p class="text-center">
-                        Não tem conta? <a href="/register">Registre-se aqui</a>
-                    </p>
-                </div>
+        @if (!string.IsNullOrEmpty(errorMessage))
+        {
+            <div class="alert alert-danger py-2" role="alert">
+                <small>@errorMessage</small>
             </div>
+        }
+
+        <form @onsubmit="HandleLogin">
+            <div class="mb-3">
+                <label for="email" class="form-label small text-muted">E-mail</label>
+                <input type="email" class="form-control" id="email" @bind="loginDto.Email" required placeholder="seu@email.com" />
+            </div>
+
+            <div class="mb-3">
+                <div class="d-flex justify-content-between">
+                    <label for="password" class="form-label small text-muted">Senha</label>
+                    <a href="/forgot-password" class="small text-orange">Esqueceu a senha?</a>
+                </div>
+                <input type="password" class="form-control" id="password" @bind="loginDto.Password" required placeholder="********" />
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 mb-3" disabled="@isLoading">
+                @if (isLoading)
+                {
+                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    <span>Entrando...</span>
+                }
+                else
+                {
+                    <span>ENTRAR</span>
+                }
+            </button>
+        </form>
+
+        <div class="text-center mt-4">
+            <p class="small text-muted mb-0">
+                Ainda não tem uma conta? <a href="/register" class="text-orange font-weight-bold">REGISTRE-SE</a>
+            </p>
         </div>
     </div>
 </div>
+
+<style>
+    .login-container {
+        height: 100vh;
+        background-color: #000;
+        background-image: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
+    }
+
+    .login-card {
+        width: 100%;
+        max-width: 400px;
+        background-color: #121212;
+        border: 1px solid #333;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .font-weight-bold {
+        font-weight: 800;
+        letter-spacing: 1px;
+    }
+</style>
 
 @code {
     private LoginDto loginDto = new();
@@ -62,17 +85,26 @@
         isLoading = true;
         errorMessage = string.Empty;
 
-        var result = await AuthService.LoginAsync(loginDto);
-        if (result != null)
+        try 
         {
-            await AuthService.SetTokenAsync(result.Token);
-            Navigation.NavigateTo("/dashboard");
+            var result = await AuthService.LoginAsync(loginDto);
+            if (result != null)
+            {
+                await AuthService.SetTokenAsync(result.Token);
+                Navigation.NavigateTo("/dashboard");
+            }
+            else
+            {
+                errorMessage = "Email ou senha inválidos";
+            }
         }
-        else
+        catch (Exception)
         {
-            errorMessage = "Email ou senha inválidos";
+            errorMessage = "Ocorreu um erro ao tentar entrar. Tente novamente mais tarde.";
         }
-
-        isLoading = false;
+        finally 
+        {
+            isLoading = false;
+        }
     }
 }

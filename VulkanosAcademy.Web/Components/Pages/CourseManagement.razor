@@ -6,145 +6,236 @@
 @inject NavigationManager Navigation
 @inject IJSRuntime JSRuntime
 
-<div class="container-fluid mt-4">
-    <div class="row mb-4">
+<div class="container-fluid py-4">
+    <div class="row mb-5 align-items-center">
         <div class="col">
-            <h1>Gerenciar Conteúdo - @(course?.Title ?? "Carregando...")</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/producer/dashboard">Painel</a></li>
+                    <li class="breadcrumb-item active text-white" aria-current="page">Gerenciar Conteúdo</li>
+                </ol>
+            </nav>
+            <h1 class="display-6 mb-0">CONTEÚDO: <span class="text-orange">@(course?.Title ?? "Carregando...")</span></h1>
         </div>
-        <div class="col text-end">
-            <button class="btn btn-success" @onclick="ShowCreateModuleModal">+ Novo Módulo</button>
-            <button class="btn btn-outline-secondary" @onclick="GoBack">Voltar</button>
+        <div class="col-auto">
+            <button class="btn btn-primary" @onclick="ShowCreateModuleModal">
+                <span class="bi bi-folder-plus me-2"></span> NOVO MÓDULO
+            </button>
         </div>
     </div>
 
     @if (isLoading)
     {
-        <div class="text-center">
-            <div class="spinner-border" role="status">
+        <div class="text-center py-5">
+            <div class="spinner-border text-orange" role="status">
                 <span class="visually-hidden">Carregando...</span>
             </div>
         </div>
     }
     else if (modules == null || !modules.Any())
     {
-        <div class="alert alert-info">
-            Este curso ainda não possui módulos. <a href="#" @onclick="ShowCreateModuleModal">Crie um novo módulo agora</a>
+        <div class="empty-state text-center py-5">
+            <div class="mb-3">
+                <span class="bi bi-collection display-1 text-muted"></span>
+            </div>
+            <h4>Nenhum módulo criado</h4>
+            <p class="text-muted">Organize seu curso criando módulos e adicionando aulas.</p>
+            <button class="btn btn-primary mt-2" @onclick="ShowCreateModuleModal">CRIAR PRIMEIRO MÓDULO</button>
         </div>
     }
     else
     {
-        @foreach (var module in modules.OrderBy(m => m.Order))
-        {
-            <div class="card mb-4">
-                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                    <div>
-                        <h5 class="mb-0">@module.Title</h5>
-                        <small>@module.Description</small>
-                    </div>
-                    <div>
-                        <button class="btn btn-sm btn-light" @onclick="() => EditModule(module.Id)">Editar</button>
-                        <button class="btn btn-sm btn-warning" @onclick="() => ShowCreateLessonModal(module.Id)">+ Aula</button>
-                        <button class="btn btn-sm btn-danger" @onclick="() => DeleteModule(module.Id)">Deletar</button>
-                    </div>
-                </div>
-                <div class="card-body">
-                    @{
-                        var moduleLessons = lessons.Where(l => l.ModuleId == module.Id).OrderBy(l => l.Order).ToList();
-                    }
-                    @if (!moduleLessons.Any())
-                    {
-                        <p class="text-muted">Nenhuma aula neste módulo</p>
-                    }
-                    else
-                    {
-                        <div class="list-group">
-                            @foreach (var lesson in moduleLessons)
-                            {
-                                <div class="list-group-item d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h6 class="mb-1">@lesson.Title</h6>
-                                        <small class="text-muted">@lesson.Description</small>
-                                    </div>
-                                    <div>
-                                        <button class="btn btn-sm btn-info" @onclick="() => EditLesson(lesson.Id)">Editar</button>
-                                        <button class="btn btn-sm btn-danger" @onclick="() => DeleteLesson(lesson.Id)">Deletar</button>
-                                    </div>
-                                </div>
-                            }
+        <div class="modules-list">
+            @foreach (var module in modules.OrderBy(m => m.Order))
+            {
+                <div class="module-item mb-4">
+                    <div class="module-header p-3 d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <div class="module-order me-3">@module.Order</div>
+                            <div>
+                                <h5 class="mb-0 text-white">@module.Title</h5>
+                                <small class="text-muted">@module.Description</small>
+                            </div>
                         </div>
-                    }
+                        <div class="module-actions">
+                            <button class="btn btn-dark btn-sm me-1" @onclick="() => EditModule(module.Id)">
+                                <span class="bi bi-pencil"></span>
+                            </button>
+                            <button class="btn btn-orange-outline btn-sm me-1" @onclick="() => ShowCreateLessonModal(module.Id)">
+                                <span class="bi bi-plus-lg me-1"></span> AULA
+                            </button>
+                            <button class="btn btn-outline-danger btn-sm" @onclick="() => DeleteModule(module.Id)">
+                                <span class="bi bi-trash"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="module-content p-2">
+                        @{
+                            var moduleLessons = lessons.Where(l => l.ModuleId == module.Id).OrderBy(l => l.Order).ToList();
+                        }
+                        @if (!moduleLessons.Any())
+                        {
+                            <div class="text-center py-3 text-muted small">
+                                <span class="bi bi-info-circle me-1"></span> Nenhuma aula adicionada a este módulo
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="lessons-list">
+                                @foreach (var lesson in moduleLessons)
+                                {
+                                    <div class="lesson-item p-3 d-flex justify-content-between align-items-center">
+                                        <div class="d-flex align-items-center">
+                                            <span class="bi bi-play-btn text-orange me-3"></span>
+                                            <div>
+                                                <h6 class="mb-0 text-white">@lesson.Title</h6>
+                                                @if (!string.IsNullOrEmpty(lesson.VideoUrl))
+                                                {
+                                                    <small class="text-muted"><span class="bi bi-link-45deg"></span> @lesson.VideoUrl</small>
+                                                }
+                                            </div>
+                                        </div>
+                                        <div class="lesson-actions">
+                                            <button class="btn btn-link text-muted btn-sm me-1" @onclick="() => EditLesson(lesson.Id)">
+                                                <span class="bi bi-pencil"></span>
+                                            </button>
+                                            <button class="btn btn-link text-danger btn-sm" @onclick="() => DeleteLesson(lesson.Id)">
+                                                <span class="bi bi-x-lg"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
                 </div>
-            </div>
-        }
+            }
+        </div>
     }
 </div>
 
-<!-- Modal para criar/editar módulo -->
+<!-- Modais (Mesma lógica, mas com estilos atualizados) -->
 <div class="modal fade" id="moduleModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">@(isEditingModule ? "Editar Módulo" : "Novo Módulo")</h5>
-                <button type="button" class="btn-close" @onclick="HideCreateModuleModal"></button>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark border-secondary">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title text-orange">@(isEditingModule ? "EDITAR MÓDULO" : "NOVO MÓDULO")</h5>
+                <button type="button" class="btn-close btn-close-white" @onclick="HideCreateModuleModal"></button>
             </div>
             <div class="modal-body">
                 <form @onsubmit="SaveModule">
                     <div class="mb-3">
-                        <label for="moduleTitle" class="form-label">Título do Módulo</label>
-                        <input type="text" class="form-control" id="moduleTitle" @bind="newModule.Title" required />
+                        <label class="form-label small text-muted">Título do Módulo</label>
+                        <input type="text" class="form-control" @bind="newModule.Title" required />
                     </div>
                     <div class="mb-3">
-                        <label for="moduleDescription" class="form-label">Descrição</label>
-                        <textarea class="form-control" id="moduleDescription" rows="3" @bind="newModule.Description"></textarea>
+                        <label class="form-label small text-muted">Descrição</label>
+                        <textarea class="form-control" rows="2" @bind="newModule.Description"></textarea>
                     </div>
                     <div class="mb-3">
-                        <label for="moduleOrder" class="form-label">Ordem</label>
-                        <input type="number" class="form-control" id="moduleOrder" @bind="newModule.Order" required />
+                        <label class="form-label small text-muted">Ordem</label>
+                        <input type="number" class="form-control" @bind="newModule.Order" required />
                     </div>
-                    <button type="submit" class="btn btn-primary">Salvar Módulo</button>
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-primary">SALVAR MÓDULO</button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Modal para criar/editar aula -->
 <div class="modal fade" id="lessonModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">@(isEditingLesson ? "Editar Aula" : "Nova Aula")</h5>
-                <button type="button" class="btn-close" @onclick="HideCreateLessonModal"></button>
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content bg-dark border-secondary">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title text-orange">@(isEditingLesson ? "EDITAR AULA" : "NOVA AULA")</h5>
+                <button type="button" class="btn-close btn-close-white" @onclick="HideCreateLessonModal"></button>
             </div>
             <div class="modal-body">
                 <form @onsubmit="SaveLesson">
-                    <div class="mb-3">
-                        <label for="lessonTitle" class="form-label">Título da Aula</label>
-                        <input type="text" class="form-control" id="lessonTitle" @bind="newLesson.Title" required />
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <label class="form-label small text-muted">Título da Aula</label>
+                                <input type="text" class="form-control" @bind="newLesson.Title" required />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small text-muted">Descrição</label>
+                                <textarea class="form-control" rows="4" @bind="newLesson.Description"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label class="form-label small text-muted">URL do Vídeo</label>
+                                <input type="url" class="form-control" @bind="newLesson.VideoUrl" placeholder="https://..." />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small text-muted">Ordem</label>
+                                <input type="number" class="form-control" @bind="newLesson.Order" required />
+                            </div>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="lessonDescription" class="form-label">Descrição</label>
-                        <textarea class="form-control" id="lessonDescription" rows="3" @bind="newLesson.Description"></textarea>
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-primary">SALVAR AULA</button>
                     </div>
-                    <div class="mb-3">
-                        <label for="lessonVideoUrl" class="form-label">URL do Vídeo</label>
-                        <input type="url" class="form-control" id="lessonVideoUrl" @bind="newLesson.VideoUrl" placeholder="https://..." />
-                    </div>
-                    <div class="mb-3">
-                        <label for="lessonOrder" class="form-label">Ordem</label>
-                        <input type="number" class="form-control" id="lessonOrder" @bind="newLesson.Order" required />
-                    </div>
-                    <button type="submit" class="btn btn-primary">Salvar Aula</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
 
-@code {
-    [Parameter]
-    public Guid CourseId { get; set; }
+<style>
+    .module-item {
+        background-color: #121212;
+        border: 1px solid #222;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    .module-header {
+        background-color: #1a1a1a;
+        border-bottom: 1px solid #222;
+    }
+    .module-order {
+        width: 30px;
+        height: 30px;
+        background-color: #FF6600;
+        color: #000;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.9rem;
+    }
+    
+    .lesson-item {
+        border-bottom: 1px solid #1a1a1a;
+        transition: background-color 0.2s ease;
+    }
+    .lesson-item:last-child {
+        border-bottom: none;
+    }
+    .lesson-item:hover {
+        background-color: #1a1a1a;
+    }
+    
+    .btn-orange-outline {
+        color: #FF6600;
+        border: 1px solid #FF6600;
+    }
+    .btn-orange-outline:hover {
+        background-color: #FF6600;
+        color: #000;
+    }
+    
+    .breadcrumb-item + .breadcrumb-item::before {
+        color: #555;
+    }
+</style>
 
+@code {
+    [Parameter] public Guid CourseId { get; set; }
     private CourseDto? course;
     private IEnumerable<ModuleDto> modules = new List<ModuleDto>();
     private IEnumerable<LessonDto> lessons = new List<LessonDto>();
@@ -155,222 +246,103 @@
     private bool isEditingLesson = false;
     private Guid editingModuleId;
     private Guid editingLessonId;
-    private Guid currentModuleId;
 
     protected override async Task OnInitializedAsync()
     {
-        try
-        {
-            course = await CourseService.GetCourseAsync(CourseId);
-            modules = await ModuleService.GetModulesByCourseAsync(CourseId);
-            
-            // Carregar todas as aulas dos módulos
-            var allLessons = new List<LessonDto>();
-            foreach (var module in modules)
-            {
-                var moduleLessons = await LessonService.GetLessonsByModuleAsync(module.Id);
-                allLessons.AddRange(moduleLessons);
-            }
-            lessons = allLessons;
-            
-            isLoading = false;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Erro ao carregar conteúdo: {ex.Message}");
-            isLoading = false;
-        }
+        await LoadData();
     }
 
-    private void ShowCreateModuleModal()
+    private async Task LoadData()
     {
+        isLoading = true;
+        try {
+            course = await CourseService.GetCourseAsync(CourseId);
+            modules = await ModuleService.GetModulesByCourseAsync(CourseId) ?? new List<ModuleDto>();
+            
+            var allLessons = new List<LessonDto>();
+            foreach (var m in modules) {
+                var moduleLessons = await LessonService.GetLessonsByModuleAsync(m.Id);
+                if (moduleLessons != null) allLessons.AddRange(moduleLessons);
+            }
+            lessons = allLessons;
+        } catch (Exception) { }
+        isLoading = false;
+    }
+
+    private void ShowCreateModuleModal() {
         newModule = new() { CourseId = CourseId, Order = (modules?.Count() ?? 0) + 1 };
         isEditingModule = false;
         ShowModal("moduleModal");
     }
 
-    private void HideCreateModuleModal()
-    {
-        HideModal("moduleModal");
+    private void HideCreateModuleModal() => HideModal("moduleModal");
+
+    private async Task SaveModule() {
+        if (isEditingModule) {
+            await ModuleService.UpdateModuleAsync(editingModuleId, new UpdateModuleDto { 
+                Title = newModule.Title, Description = newModule.Description, Order = newModule.Order 
+            });
+        } else {
+            await ModuleService.CreateModuleAsync(newModule);
+        }
+        await LoadData();
+        HideCreateModuleModal();
     }
 
-    private async Task SaveModule()
-    {
-        try
-        {
-            if (isEditingModule)
-            {
-                var updateDto = new UpdateModuleDto
-                {
-                    Title = newModule.Title,
-                    Description = newModule.Description,
-                    Order = newModule.Order
-                };
-                await ModuleService.UpdateModuleAsync(editingModuleId, updateDto);
-            }
-            else
-            {
-                await ModuleService.CreateModuleAsync(newModule);
-            }
-            
-            modules = await ModuleService.GetModulesByCourseAsync(CourseId);
-            HideCreateModuleModal();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Erro ao salvar módulo: {ex.Message}");
-        }
-    }
-
-    private void EditModule(Guid moduleId)
-    {
-        var module = modules.FirstOrDefault(m => m.Id == moduleId);
-        if (module != null)
-        {
-            newModule = new()
-            {
-                CourseId = module.CourseId,
-                Title = module.Title,
-                Description = module.Description,
-                Order = module.Order
-            };
-            editingModuleId = moduleId;
+    private void EditModule(Guid id) {
+        var m = modules.FirstOrDefault(x => x.Id == id);
+        if (m != null) {
+            newModule = new() { CourseId = m.CourseId, Title = m.Title, Description = m.Description, Order = m.Order };
+            editingModuleId = id;
             isEditingModule = true;
             ShowModal("moduleModal");
         }
     }
 
-    private async Task DeleteModule(Guid moduleId)
-    {
-        if (await JSRuntime.InvokeAsync<bool>("confirm", "Tem certeza que deseja deletar este módulo e todas as suas aulas?"))
-        {
-            try
-            {
-                await ModuleService.DeleteModuleAsync(moduleId);
-                modules = await ModuleService.GetModulesByCourseAsync(CourseId);
-                
-                // Recarregar aulas
-                var allLessons = new List<LessonDto>();
-                foreach (var module in modules)
-                {
-                    var moduleLessons = await LessonService.GetLessonsByModuleAsync(module.Id);
-                    allLessons.AddRange(moduleLessons);
-                }
-                lessons = allLessons;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Erro ao deletar módulo: {ex.Message}");
-            }
+    private async Task DeleteModule(Guid id) {
+        if (await JSRuntime.InvokeAsync<bool>("confirm", "Deletar este módulo e todas as suas aulas?")) {
+            await ModuleService.DeleteModuleAsync(id);
+            await LoadData();
         }
     }
 
-    private void ShowCreateLessonModal(Guid moduleId)
-    {
-        currentModuleId = moduleId;
+    private void ShowCreateLessonModal(Guid moduleId) {
         newLesson = new() { ModuleId = moduleId, Order = (lessons.Where(l => l.ModuleId == moduleId).Count() + 1) };
         isEditingLesson = false;
         ShowModal("lessonModal");
     }
 
-    private void HideCreateLessonModal()
-    {
-        HideModal("lessonModal");
+    private void HideCreateLessonModal() => HideModal("lessonModal");
+
+    private async Task SaveLesson() {
+        if (isEditingLesson) {
+            await LessonService.UpdateLessonAsync(editingLessonId, new UpdateLessonDto { 
+                Title = newLesson.Title, Description = newLesson.Description, VideoUrl = newLesson.VideoUrl, Order = newLesson.Order 
+            });
+        } else {
+            await LessonService.CreateLessonAsync(newLesson);
+        }
+        await LoadData();
+        HideCreateLessonModal();
     }
 
-    private async Task SaveLesson()
-    {
-        try
-        {
-            if (isEditingLesson)
-            {
-                var updateDto = new UpdateLessonDto
-                {
-                    Title = newLesson.Title,
-                    Description = newLesson.Description,
-                    VideoUrl = newLesson.VideoUrl,
-                    Order = newLesson.Order
-                };
-                await LessonService.UpdateLessonAsync(editingLessonId, updateDto);
-            }
-            else
-            {
-                await LessonService.CreateLessonAsync(newLesson);
-            }
-            
-            // Recarregar aulas
-            var allLessons = new List<LessonDto>();
-            foreach (var module in modules)
-            {
-                var moduleLessons = await LessonService.GetLessonsByModuleAsync(module.Id);
-                allLessons.AddRange(moduleLessons);
-            }
-            lessons = allLessons;
-            
-            HideCreateLessonModal();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Erro ao salvar aula: {ex.Message}");
-        }
-    }
-
-    private void EditLesson(Guid lessonId)
-    {
-        var lesson = lessons.FirstOrDefault(l => l.Id == lessonId);
-        if (lesson != null)
-        {
-            newLesson = new()
-            {
-                ModuleId = lesson.ModuleId,
-                Title = lesson.Title,
-                Description = lesson.Description,
-                VideoUrl = lesson.VideoUrl,
-                Order = lesson.Order
-            };
-            editingLessonId = lessonId;
-            currentModuleId = lesson.ModuleId;
+    private void EditLesson(Guid id) {
+        var l = lessons.FirstOrDefault(x => x.Id == id);
+        if (l != null) {
+            newLesson = new() { ModuleId = l.ModuleId, Title = l.Title, Description = l.Description, VideoUrl = l.VideoUrl, Order = l.Order };
+            editingLessonId = id;
             isEditingLesson = true;
             ShowModal("lessonModal");
         }
     }
 
-    private async Task DeleteLesson(Guid lessonId)
-    {
-        if (await JSRuntime.InvokeAsync<bool>("confirm", "Tem certeza que deseja deletar esta aula?"))
-        {
-            try
-            {
-                await LessonService.DeleteLessonAsync(lessonId);
-                
-                // Recarregar aulas
-                var allLessons = new List<LessonDto>();
-                foreach (var module in modules)
-                {
-                    var moduleLessons = await LessonService.GetLessonsByModuleAsync(module.Id);
-                    allLessons.AddRange(moduleLessons);
-                }
-                lessons = allLessons;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Erro ao deletar aula: {ex.Message}");
-            }
+    private async Task DeleteLesson(Guid id) {
+        if (await JSRuntime.InvokeAsync<bool>("confirm", "Deletar esta aula?")) {
+            await LessonService.DeleteLessonAsync(id);
+            await LoadData();
         }
     }
 
-    private void GoBack()
-    {
-        Navigation.NavigateTo("/producer/dashboard");
-    }
-
-    private void ShowModal(string modalId)
-    {
-        JSRuntime.InvokeVoidAsync("eval", $"new bootstrap.Modal(document.getElementById('{modalId}')).show()");
-    }
-
-    private void HideModal(string modalId)
-    {
-        JSRuntime.InvokeVoidAsync("eval", $"bootstrap.Modal.getInstance(document.getElementById('{modalId}'))?.hide()");
-    }
+    private void ShowModal(string id) => JSRuntime.InvokeVoidAsync("eval", $"new bootstrap.Modal(document.getElementById('{id}')).show()");
+    private void HideModal(string id) => JSRuntime.InvokeVoidAsync("eval", $"bootstrap.Modal.getInstance(document.getElementById('{id}'))?.hide()");
 }
