@@ -1,0 +1,265 @@
+@page "/admin/dashboard"
+@using VulkanosAcademy.Domain.DTOs
+@using VulkanosAcademy.Web.Services
+@inject IMetricsService MetricsService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager Navigation
+
+<div class="container-fluid mt-5">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1 class="mb-1">Dashboard Administrativo</h1>
+            <p class="text-muted">Visão geral das métricas da plataforma</p>
+        </div>
+        <div class="col-md-4 text-end">
+            <button class="btn btn-outline-secondary btn-sm" @onclick="RefreshMetrics">
+                <span class="bi bi-arrow-clockwise me-1"></span>
+                Atualizar
+            </button>
+        </div>
+    </div>
+
+    @if (isLoading)
+    {
+        <div class="alert alert-info">
+            <span class="spinner-border spinner-border-sm me-2"></span>
+            Carregando métricas...
+        </div>
+    }
+    else if (metrics == null)
+    {
+        <div class="alert alert-danger">
+            <span class="bi bi-exclamation-triangle me-2"></span>
+            Erro ao carregar métricas. Verifique suas permissões.
+        </div>
+    }
+    else
+    {
+        <div class="row mb-4">
+            <div class="col-md-3 mb-3">
+                <div class="metric-card">
+                    <div class="metric-icon bg-primary">
+                        <span class="bi bi-people"></span>
+                    </div>
+                    <div class="metric-content">
+                        <h6 class="text-muted small mb-1">Total de Usuários</h6>
+                        <h3 class="mb-0">@metrics.TotalUsers</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <div class="metric-card">
+                    <div class="metric-icon bg-success">
+                        <span class="bi bi-book"></span>
+                    </div>
+                    <div class="metric-content">
+                        <h6 class="text-muted small mb-1">Total de Cursos</h6>
+                        <h3 class="mb-0">@metrics.TotalCourses</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <div class="metric-card">
+                    <div class="metric-icon bg-warning">
+                        <span class="bi bi-person-check"></span>
+                    </div>
+                    <div class="metric-content">
+                        <h6 class="text-muted small mb-1">Alunos Ativos</h6>
+                        <h3 class="mb-0">@metrics.ActiveStudents</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <div class="metric-card">
+                    <div class="metric-icon bg-info">
+                        <span class="bi bi-currency-dollar"></span>
+                    </div>
+                    <div class="metric-content">
+                        <h6 class="text-muted small mb-1">Receita Total</h6>
+                        <h3 class="mb-0">R$ @metrics.TotalRevenue.ToString("F2")</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">Estatísticas de Matrículas</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Total de Matrículas</span>
+                                <strong>@metrics.TotalEnrollments</strong>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 100%"></div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Matrículas Concluídas</span>
+                                <strong>@metrics.CompletedEnrollments</strong>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-success" style="width: @(metrics.TotalEnrollments > 0 ? (metrics.CompletedEnrollments * 100 / metrics.TotalEnrollments) : 0)%"></div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Taxa de Conclusão</span>
+                                <strong>@metrics.AverageCompletionRate.ToString("F1")%</strong>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-warning" style="width: @metrics.AverageCompletionRate%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">Resumo da Plataforma</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-sm">
+                            <tbody>
+                                <tr>
+                                    <td>Usuários Registrados</td>
+                                    <td class="text-end"><strong>@metrics.TotalUsers</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>Cursos Disponíveis</td>
+                                    <td class="text-end"><strong>@metrics.TotalCourses</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>Matrículas Ativas</td>
+                                    <td class="text-end"><strong>@(metrics.TotalEnrollments - metrics.CompletedEnrollments)</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>Alunos em Progresso</td>
+                                    <td class="text-end"><strong>@metrics.ActiveStudents</strong></td>
+                                </tr>
+                                <tr class="table-active">
+                                    <td><strong>Receita Total</strong></td>
+                                    <td class="text-end"><strong>R$ @metrics.TotalRevenue.ToString("F2")</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    .metric-card {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .metric-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .metric-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        color: white;
+    }
+
+    .metric-content h3 {
+        font-size: 28px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .card {
+        border: none;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+        border-bottom: 1px solid #e9ecef;
+        padding: 15px 20px;
+    }
+
+    .progress {
+        height: 8px;
+        border-radius: 4px;
+        background-color: #e9ecef;
+    }
+
+    .progress-bar {
+        background: linear-gradient(90deg, #667eea, #764ba2);
+        border-radius: 4px;
+    }
+</style>
+
+@code {
+    private GlobalMetricsDto? metrics;
+    private bool isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CheckAuthorization();
+        await LoadMetrics();
+    }
+
+    private async Task CheckAuthorization()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity?.IsAuthenticated != true)
+        {
+            Navigation.NavigateTo("/login");
+        }
+    }
+
+    private async Task LoadMetrics()
+    {
+        isLoading = true;
+        try
+        {
+            metrics = await MetricsService.GetGlobalMetricsAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao carregar métricas: {ex.Message}");
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private async Task RefreshMetrics()
+    {
+        await LoadMetrics();
+        StateHasChanged();
+    }
+}

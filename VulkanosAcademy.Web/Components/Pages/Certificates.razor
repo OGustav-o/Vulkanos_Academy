@@ -1,0 +1,274 @@
+@page "/certificates"
+@using VulkanosAcademy.Domain.DTOs
+@using VulkanosAcademy.Web.Services
+@inject ICertificateService CertificateService
+@inject IEnrollmentService EnrollmentService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager Navigation
+
+<div class="container mt-5">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1 class="mb-1">Meus Certificados</h1>
+            <p class="text-muted">Visualize e baixe seus certificados de conclusão de cursos</p>
+        </div>
+    </div>
+
+    @if (isLoading)
+    {
+        <div class="alert alert-info">
+            <span class="spinner-border spinner-border-sm me-2"></span>
+            Carregando certificados...
+        </div>
+    }
+    else if (certificates == null || !certificates.Any())
+    {
+        <div class="alert alert-warning">
+            <span class="bi bi-exclamation-triangle me-2"></span>
+            Você ainda não possui certificados. Complete um curso para gerar seu certificado!
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var certificate in certificates)
+            {
+                <div class="col-md-6 mb-4">
+                    <div class="certificate-card">
+                        <div class="certificate-header">
+                            <div class="certificate-icon">
+                                <span class="bi bi-award"></span>
+                            </div>
+                            <div class="certificate-title">
+                                <h5 class="mb-0">@certificate.Enrollment?.Course?.Title</h5>
+                                <small class="text-muted">Certificado de Conclusão</small>
+                            </div>
+                        </div>
+                        <div class="certificate-body">
+                            <div class="certificate-info">
+                                <p class="mb-2">
+                                    <strong>Data de Conclusão:</strong> @certificate.IssueDate.ToString("dd/MM/yyyy")
+                                </p>
+                                <p class="mb-2">
+                                    <strong>Número do Certificado:</strong> @certificate.Id.ToString().Substring(0, 8).ToUpper()
+                                </p>
+                                <p class="mb-0">
+                                    <strong>Status:</strong> <span class="badge bg-success">Concluído</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="certificate-footer">
+                            <button class="btn btn-primary btn-sm" @onclick="() => DownloadCertificate(certificate.Id)">
+                                <span class="bi bi-download me-1"></span>
+                                Baixar PDF
+                            </button>
+                            <a href="@certificate.CertificateUrl" target="_blank" class="btn btn-outline-secondary btn-sm">
+                                <span class="bi bi-eye me-1"></span>
+                                Visualizar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    @if (completedEnrollments != null && completedEnrollments.Any())
+    {
+        <div class="mt-5">
+            <h3 class="mb-3">Gerar Certificados</h3>
+            <p class="text-muted mb-4">Você completou os seguintes cursos e pode gerar certificados:</p>
+            
+            <div class="row">
+                @foreach (var enrollment in completedEnrollments)
+                {
+                    var hasCertificate = certificates?.Any(c => c.EnrollmentId == enrollment.Id) ?? false;
+                    
+                    @if (!hasCertificate)
+                    {
+                        <div class="col-md-6 mb-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">@enrollment.Course?.Title</h5>
+                                    <p class="card-text text-muted">
+                                        Concluído em @enrollment.CompletionDate?.ToString("dd/MM/yyyy")
+                                    </p>
+                                    <button class="btn btn-success btn-sm" @onclick="() => GenerateCertificate(enrollment.Id)">
+                                        <span class="bi bi-plus-circle me-1"></span>
+                                        Gerar Certificado
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    .certificate-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        color: white;
+    }
+
+    .certificate-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+    }
+
+    .certificate-header {
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .certificate-icon {
+        font-size: 32px;
+        margin-right: 15px;
+        opacity: 0.9;
+    }
+
+    .certificate-title h5 {
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+
+    .certificate-body {
+        padding: 20px;
+    }
+
+    .certificate-info p {
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .certificate-footer {
+        padding: 15px 20px;
+        background-color: rgba(0, 0, 0, 0.1);
+        display: flex;
+        gap: 10px;
+    }
+
+    .certificate-footer button,
+    .certificate-footer a {
+        flex: 1;
+        text-align: center;
+    }
+
+    .btn-primary {
+        background-color: #FF6600;
+        border-color: #FF6600;
+    }
+
+    .btn-primary:hover {
+        background-color: #FF8C00;
+        border-color: #FF8C00;
+    }
+
+    .btn-outline-secondary {
+        color: white;
+        border-color: white;
+    }
+
+    .btn-outline-secondary:hover {
+        background-color: white;
+        color: #667eea;
+        border-color: white;
+    }
+
+    .card {
+        border: none;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+</style>
+
+@code {
+    private IEnumerable<CertificateDto>? certificates;
+    private IEnumerable<EnrollmentDto>? completedEnrollments;
+    private bool isLoading = true;
+    private Guid currentUserId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadCertificates();
+    }
+
+    private async Task LoadCertificates()
+    {
+        isLoading = true;
+        try
+        {
+            // Obter ID do usuário autenticado
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+
+            if (user.Identity?.IsAuthenticated == true)
+            {
+                var userIdClaim = user.FindFirst("sub")?.Value ?? user.FindFirst("nameid")?.Value;
+                if (Guid.TryParse(userIdClaim, out var userId))
+                {
+                    currentUserId = userId;
+
+                    // Carregar certificados
+                    certificates = await CertificateService.GetUserCertificatesAsync(userId);
+
+                    // Carregar matrículas completas
+                    var enrollments = await EnrollmentService.GetUserEnrollmentsAsync(userId);
+                    completedEnrollments = enrollments?.Where(e => e.Progress >= 100 && e.CertificateId == null);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao carregar certificados: {ex.Message}");
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private async Task GenerateCertificate(Guid enrollmentId)
+    {
+        try
+        {
+            var certificate = await CertificateService.GenerateCertificateAsync(enrollmentId);
+            if (certificate != null)
+            {
+                // Recarregar certificados
+                await LoadCertificates();
+                StateHasChanged();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao gerar certificado: {ex.Message}");
+        }
+    }
+
+    private async Task DownloadCertificate(Guid certificateId)
+    {
+        try
+        {
+            await CertificateService.DownloadCertificateAsync(certificateId, $"certificado_{certificateId}.pdf");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao fazer download do certificado: {ex.Message}");
+        }
+    }
+}

@@ -55,6 +55,8 @@ builder.Services.AddCors(options =>
 
 // Add Application Services
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ICertificateService, CertificateService>();
+builder.Services.AddScoped<IMetricsService, MetricsService>();
 
 var app = builder.Build();
 
