@@ -1,0 +1,218 @@
+@page "/course/{CourseId:guid}/module/{ModuleId:guid}/lesson/{LessonId:guid}"
+@using VulkanosAcademy.Domain.DTOs
+@inject ILessonService LessonService
+@inject IMaterialService MaterialService
+@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-md-8">
+            @if (isLoading)
+            {
+                <div class="text-center">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Carregando...</span>
+                    </div>
+                </div>
+            }
+            else if (lesson == null)
+            {
+                <div class="alert alert-danger">Aula não encontrada</div>
+            }
+            else
+            {
+                <div class="card mb-4">
+                    <div class="card-header bg-dark text-white">
+                        <h4 class="mb-0">@lesson.Title</h4>
+                    </div>
+                    <div class="card-body">
+                        @if (!string.IsNullOrEmpty(lesson.VideoUrl))
+                        {
+                            <div class="mb-4">
+                                <video width="100%" height="auto" controls style="max-height: 600px;">
+                                    <source src="@lesson.VideoUrl" type="video/mp4" />
+                                    Seu navegador não suporta o elemento de vídeo.
+                                </video>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="alert alert-info">Nenhum vídeo disponível para esta aula</div>
+                        }
+
+                        <h5>Descrição</h5>
+                        <p>@lesson.Description</p>
+
+                        <hr />
+
+                        <h5>Materiais Complementares</h5>
+                        @if (materials == null || !materials.Any())
+                        {
+                            <p class="text-muted">Nenhum material disponível</p>
+                        }
+                        else
+                        {
+                            <div class="list-group">
+                                @foreach (var material in materials)
+                                {
+                                    <a href="@material.MaterialUrl" target="_blank" class="list-group-item list-group-item-action">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h6 class="mb-1">@material.Title</h6>
+                                                <small class="text-muted">@material.Type</small>
+                                            </div>
+                                            <span class="badge bg-primary">Acessar</span>
+                                        </div>
+                                    </a>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between mb-4">
+                    <button class="btn btn-secondary" @onclick="GoToPreviousLesson">← Aula Anterior</button>
+                    <button class="btn btn-secondary" @onclick="GoToNextLesson">Próxima Aula →</button>
+                </div>
+            }
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">Navegação do Curso</h5>
+                </div>
+                <div class="card-body">
+                    <button class="btn btn-outline-secondary btn-sm w-100 mb-3" @onclick="GoBackToCourse">← Voltar ao Curso</button>
+                    
+                    @if (modules != null && modules.Any())
+                    {
+                        @foreach (var module in modules.OrderBy(m => m.Order))
+                        {
+                            <div class="mb-3">
+                                <h6 class="mb-2">@module.Title</h6>
+                                @{
+                                    var moduleLessons = allLessons.Where(l => l.ModuleId == module.Id).OrderBy(l => l.Order).ToList();
+                                }
+                                <div class="list-group list-group-sm">
+                                    @foreach (var l in moduleLessons)
+                                    {
+                                        var isCurrentLesson = l.Id == LessonId;
+                                        <button class="list-group-item list-group-item-action @(isCurrentLesson ? "active" : "")" 
+                                                @onclick="() => GoToLesson(l.Id)">
+                                            @l.Title
+                                        </button>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+
+            <div class="card mt-4">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Progresso</h5>
+                </div>
+                <div class="card-body">
+                    <p class="mb-2">Aula @(currentLessonIndex + 1) de @(allLessons.Count())</p>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: @(((currentLessonIndex + 1) * 100) / allLessons.Count())%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public Guid CourseId { get; set; }
+
+    [Parameter]
+    public Guid ModuleId { get; set; }
+
+    [Parameter]
+    public Guid LessonId { get; set; }
+
+    private LessonDto? lesson;
+    private IEnumerable<LessonMaterialDto> materials = new List<LessonMaterialDto>();
+    private IEnumerable<ModuleDto> modules = new List<ModuleDto>();
+    private List<LessonDto> allLessons = new();
+    private bool isLoading = true;
+    private int currentLessonIndex = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            // Carregar aula
+            lesson = await LessonService.GetLessonAsync(LessonId);
+            
+            // Carregar materiais
+            materials = await MaterialService.GetMaterialsByLessonAsync(LessonId);
+            
+            // Carregar módulos e aulas para navegação
+            modules = await GetModulesForCourse();
+            
+            // Carregar todas as aulas em ordem
+            var lessonsList = new List<LessonDto>();
+            foreach (var module in modules.OrderBy(m => m.Order))
+            {
+                var moduleLessons = await LessonService.GetLessonsByModuleAsync(module.Id);
+                lessonsList.AddRange(moduleLessons.OrderBy(l => l.Order));
+            }
+            allLessons = lessonsList;
+            
+            // Encontrar índice da aula atual
+            currentLessonIndex = allLessons.FindIndex(l => l.Id == LessonId);
+            
+            isLoading = false;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao carregar aula: {ex.Message}");
+            isLoading = false;
+        }
+    }
+
+    private async Task<IEnumerable<ModuleDto>> GetModulesForCourse()
+    {
+        // Este método será implementado quando ModuleService estiver disponível
+        // Por enquanto, retorna uma lista vazia
+        return new List<ModuleDto>();
+    }
+
+    private void GoToPreviousLesson()
+    {
+        if (currentLessonIndex > 0)
+        {
+            var previousLesson = allLessons[currentLessonIndex - 1];
+            Navigation.NavigateTo($"/course/{CourseId}/module/{previousLesson.ModuleId}/lesson/{previousLesson.Id}");
+        }
+    }
+
+    private void GoToNextLesson()
+    {
+        if (currentLessonIndex < allLessons.Count - 1)
+        {
+            var nextLesson = allLessons[currentLessonIndex + 1];
+            Navigation.NavigateTo($"/course/{CourseId}/module/{nextLesson.ModuleId}/lesson/{nextLesson.Id}");
+        }
+    }
+
+    private void GoToLesson(Guid lessonId)
+    {
+        var targetLesson = allLessons.FirstOrDefault(l => l.Id == lessonId);
+        if (targetLesson != null)
+        {
+            Navigation.NavigateTo($"/course/{CourseId}/module/{targetLesson.ModuleId}/lesson/{targetLesson.Id}");
+        }
+    }
+
+    private void GoBackToCourse()
+    {
+        Navigation.NavigateTo($"/course/{CourseId}");
+    }
+}

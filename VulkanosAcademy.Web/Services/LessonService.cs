@@ -8,7 +8,7 @@ public interface ILessonService
     Task<IEnumerable<LessonDto>?> GetLessonsByModuleAsync(Guid moduleId);
     Task<LessonDto?> GetLessonAsync(Guid id);
     Task<LessonDto?> CreateLessonAsync(CreateLessonDto createLessonDto);
-    Task<bool> UpdateLessonAsync(Guid id, CreateLessonDto updateLessonDto);
+    Task<bool> UpdateLessonAsync(Guid id, UpdateLessonDto updateLessonDto);
     Task<bool> DeleteLessonAsync(Guid id);
 }
 
@@ -65,7 +65,7 @@ public class LessonService : ILessonService
         }
     }
 
-    public async Task<bool> UpdateLessonAsync(Guid id, CreateLessonDto updateLessonDto)
+    public async Task<bool> UpdateLessonAsync(Guid id, UpdateLessonDto updateLessonDto)
     {
         try
         {

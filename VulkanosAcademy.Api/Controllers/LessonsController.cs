@@ -93,16 +93,21 @@ public class LessonsController : ControllerBase
 
     [Authorize]
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateLesson(Guid id, [FromBody] CreateLessonDto updateLessonDto)
+    public async Task<IActionResult> UpdateLesson(Guid id, [FromBody] UpdateLessonDto updateLessonDto)
     {
         var lesson = await _context.Lessons.FindAsync(id);
         if (lesson == null)
             return NotFound();
 
-        lesson.Title = updateLessonDto.Title;
-        lesson.Description = updateLessonDto.Description;
-        lesson.VideoUrl = updateLessonDto.VideoUrl;
-        lesson.Order = updateLessonDto.Order;
+        if (!string.IsNullOrEmpty(updateLessonDto.Title))
+            lesson.Title = updateLessonDto.Title;
+        if (!string.IsNullOrEmpty(updateLessonDto.Description))
+            lesson.Description = updateLessonDto.Description;
+        if (!string.IsNullOrEmpty(updateLessonDto.VideoUrl))
+            lesson.VideoUrl = updateLessonDto.VideoUrl;
+        if (updateLessonDto.Order.HasValue)
+            lesson.Order = updateLessonDto.Order.Value;
+        
         lesson.UpdatedAt = DateTime.UtcNow;
 
         await _context.SaveChangesAsync();

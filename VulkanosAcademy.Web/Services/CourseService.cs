@@ -6,6 +6,7 @@ namespace VulkanosAcademy.Web.Services;
 public interface ICourseService
 {
     Task<IEnumerable<CourseDto>?> GetCoursesAsync();
+    Task<IEnumerable<CourseDto>?> GetCoursesByInstructorAsync(Guid instructorId);
     Task<CourseDto?> GetCourseAsync(Guid id);
     Task<CourseDto?> CreateCourseAsync(CreateCourseDto createCourseDto);
     Task<bool> UpdateCourseAsync(Guid id, UpdateCourseDto updateCourseDto);
@@ -30,6 +31,19 @@ public class CourseService : ICourseService
         catch (Exception ex)
         {
             Console.WriteLine($"Erro ao buscar cursos: {ex.Message}");
+            return null;
+        }
+    }
+
+    public async Task<IEnumerable<CourseDto>?> GetCoursesByInstructorAsync(Guid instructorId)
+    {
+        try
+        {
+            return await _httpClient.GetFromJsonAsync<IEnumerable<CourseDto>>($"api/courses/instructor/{instructorId}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao buscar cursos do instrutor: {ex.Message}");
             return null;
         }
     }

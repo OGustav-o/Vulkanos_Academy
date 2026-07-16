@@ -85,15 +85,19 @@ public class ModulesController : ControllerBase
 
     [Authorize]
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateModule(Guid id, [FromBody] CreateModuleDto updateModuleDto)
+    public async Task<IActionResult> UpdateModule(Guid id, [FromBody] UpdateModuleDto updateModuleDto)
     {
         var module = await _context.Modules.FindAsync(id);
         if (module == null)
             return NotFound();
 
-        module.Title = updateModuleDto.Title;
-        module.Description = updateModuleDto.Description;
-        module.Order = updateModuleDto.Order;
+        if (!string.IsNullOrEmpty(updateModuleDto.Title))
+            module.Title = updateModuleDto.Title;
+        if (!string.IsNullOrEmpty(updateModuleDto.Description))
+            module.Description = updateModuleDto.Description;
+        if (updateModuleDto.Order.HasValue)
+            module.Order = updateModuleDto.Order.Value;
+        
         module.UpdatedAt = DateTime.UtcNow;
 
         await _context.SaveChangesAsync();

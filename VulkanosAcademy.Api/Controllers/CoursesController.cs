@@ -39,6 +39,27 @@ public class CoursesController : ControllerBase
         return Ok(courses);
     }
 
+    [HttpGet("instructor/{instructorId}")]
+    public async Task<ActionResult<IEnumerable<CourseDto>>> GetCoursesByInstructor(Guid instructorId)
+    {
+        var courses = await _context.Courses
+            .Where(c => c.InstructorId == instructorId)
+            .Select(c => new CourseDto
+            {
+                Id = c.Id,
+                Title = c.Title,
+                Description = c.Description,
+                InstructorId = c.InstructorId,
+                ThumbnailUrl = c.ThumbnailUrl,
+                Price = c.Price,
+                Status = c.Status.ToString(),
+                CreatedAt = c.CreatedAt
+            })
+            .ToListAsync();
+
+        return Ok(courses);
+    }
+
     [HttpGet("{id}")]
     public async Task<ActionResult<CourseDto>> GetCourse(Guid id)
     {

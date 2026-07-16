@@ -1,13 +1,15 @@
 using System.Net.Http.Json;
+using VulkanosAcademy.Domain.DTOs;
 using VulkanosAcademy.Domain.Entities;
 
 namespace VulkanosAcademy.Web.Services;
 
 public interface IMaterialService
 {
-    Task<IEnumerable<LessonMaterial>?> GetMaterialsByLessonAsync(Guid lessonId);
-    Task<LessonMaterial?> GetMaterialAsync(Guid id);
-    Task<LessonMaterial?> CreateMaterialAsync(LessonMaterial createMaterialDto);
+    Task<IEnumerable<LessonMaterialDto>?> GetMaterialsByLessonAsync(Guid lessonId);
+    Task<LessonMaterialDto?> GetMaterialAsync(Guid id);
+    Task<LessonMaterialDto?> CreateMaterialAsync(CreateLessonMaterialDto createMaterialDto);
+    Task<bool> UpdateMaterialAsync(Guid id, UpdateLessonMaterialDto updateMaterialDto);
     Task<bool> DeleteMaterialAsync(Guid id);
 }
 
@@ -20,11 +22,11 @@ public class MaterialService : IMaterialService
         _httpClient = httpClient;
     }
 
-    public async Task<IEnumerable<LessonMaterial>?> GetMaterialsByLessonAsync(Guid lessonId)
+    public async Task<IEnumerable<LessonMaterialDto>?> GetMaterialsByLessonAsync(Guid lessonId)
     {
         try
         {
-            return await _httpClient.GetFromJsonAsync<IEnumerable<LessonMaterial>>($"api/lessonmaterials/lesson/{lessonId}");
+            return await _httpClient.GetFromJsonAsync<IEnumerable<LessonMaterialDto>>($"api/lessonmaterials/lesson/{lessonId}");
         }
         catch (Exception ex)
         {
@@ -33,11 +35,11 @@ public class MaterialService : IMaterialService
         }
     }
 
-    public async Task<LessonMaterial?> GetMaterialAsync(Guid id)
+    public async Task<LessonMaterialDto?> GetMaterialAsync(Guid id)
     {
         try
         {
-            return await _httpClient.GetFromJsonAsync<LessonMaterial>($"api/lessonmaterials/{id}");
+            return await _httpClient.GetFromJsonAsync<LessonMaterialDto>($"api/lessonmaterials/{id}");
         }
         catch (Exception ex)
         {
@@ -46,14 +48,14 @@ public class MaterialService : IMaterialService
         }
     }
 
-    public async Task<LessonMaterial?> CreateMaterialAsync(LessonMaterial createMaterialDto)
+    public async Task<LessonMaterialDto?> CreateMaterialAsync(CreateLessonMaterialDto createMaterialDto)
     {
         try
         {
             var response = await _httpClient.PostAsJsonAsync("api/lessonmaterials", createMaterialDto);
             if (response.IsSuccessStatusCode)
             {
-                return await response.Content.ReadAsAsync<LessonMaterial>();
+                return await response.Content.ReadAsAsync<LessonMaterialDto>();
             }
             return null;
         }
@@ -61,6 +63,20 @@ public class MaterialService : IMaterialService
         {
             Console.WriteLine($"Erro ao criar material: {ex.Message}");
             return null;
+        }
+    }
+
+    public async Task<bool> UpdateMaterialAsync(Guid id, UpdateLessonMaterialDto updateMaterialDto)
+    {
+        try
+        {
+            var response = await _httpClient.PutAsJsonAsync($"api/lessonmaterials/{id}", updateMaterialDto);
+            return response.IsSuccessStatusCode;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao atualizar material: {ex.Message}");
+            return false;
         }
     }
 

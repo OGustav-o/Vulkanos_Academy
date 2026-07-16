@@ -8,7 +8,7 @@ public interface IModuleService
     Task<IEnumerable<ModuleDto>?> GetModulesByCourseAsync(Guid courseId);
     Task<ModuleDto?> GetModuleAsync(Guid id);
     Task<ModuleDto?> CreateModuleAsync(CreateModuleDto createModuleDto);
-    Task<bool> UpdateModuleAsync(Guid id, CreateModuleDto updateModuleDto);
+    Task<bool> UpdateModuleAsync(Guid id, UpdateModuleDto updateModuleDto);
     Task<bool> DeleteModuleAsync(Guid id);
 }
 
@@ -65,7 +65,7 @@ public class ModuleService : IModuleService
         }
     }
 
-    public async Task<bool> UpdateModuleAsync(Guid id, CreateModuleDto updateModuleDto)
+    public async Task<bool> UpdateModuleAsync(Guid id, UpdateModuleDto updateModuleDto)
     {
         try
         {
