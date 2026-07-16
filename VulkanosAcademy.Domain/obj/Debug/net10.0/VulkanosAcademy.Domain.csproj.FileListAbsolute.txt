@@ -10,3 +10,15 @@
 /home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Domain/obj/Debug/net10.0/refint/VulkanosAcademy.Domain.dll
 /home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Domain/obj/Debug/net10.0/VulkanosAcademy.Domain.pdb
 /home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Domain/obj/Debug/net10.0/ref/VulkanosAcademy.Domain.dll
+C:\Users\gustavo.melo\Documents\Vulkanos_Academy\VulkanosAcademy.Domain\bin\Debug\net10.0\VulkanosAcademy.Domain.deps.json
+C:\Users\gustavo.melo\Documents\Vulkanos_Academy\VulkanosAcademy.Domain\bin\Debug\net10.0\VulkanosAcademy.Domain.dll
+C:\Users\gustavo.melo\Documents\Vulkanos_Academy\VulkanosAcademy.Domain\bin\Debug\net10.0\VulkanosAcademy.Domain.pdb
+C:\Users\gustavo.melo\Documents\Vulkanos_Academy\VulkanosAcademy.Domain\obj\Debug\net10.0\VulkanosAcademy.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\gustavo.melo\Documents\Vulkanos_Academy\VulkanosAcademy.Domain\obj\Debug\net10.0\VulkanosAcademy.Domain.AssemblyInfoInputs.cache
+C:\Users\gustavo.melo\Documents\Vulkanos_Academy\VulkanosAcademy.Domain\obj\Debug\net10.0\VulkanosAcademy.Domain.AssemblyInfo.cs
+C:\Users\gustavo.melo\Documents\Vulkanos_Academy\VulkanosAcademy.Domain\obj\Debug\net10.0\VulkanosAcademy.Domain.csproj.CoreCompileInputs.cache
+C:\Users\gustavo.melo\Documents\Vulkanos_Academy\VulkanosAcademy.Domain\obj\Debug\net10.0\VulkanosAcademy.Domain.sourcelink.json
+C:\Users\gustavo.melo\Documents\Vulkanos_Academy\VulkanosAcademy.Domain\obj\Debug\net10.0\VulkanosAcademy.Domain.dll
+C:\Users\gustavo.melo\Documents\Vulkanos_Academy\VulkanosAcademy.Domain\obj\Debug\net10.0\refint\VulkanosAcademy.Domain.dll
+C:\Users\gustavo.melo\Documents\Vulkanos_Academy\VulkanosAcademy.Domain\obj\Debug\net10.0\VulkanosAcademy.Domain.pdb
+C:\Users\gustavo.melo\Documents\Vulkanos_Academy\VulkanosAcademy.Domain\obj\Debug\net10.0\ref\VulkanosAcademy.Domain.dll

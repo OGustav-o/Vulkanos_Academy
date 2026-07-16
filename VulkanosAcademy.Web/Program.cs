@@ -8,7 +8,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 // Add HttpClient for API communication
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.Configuration["ApiBaseUrl"] ?? "https://localhost:7001") });
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.Configuration["ApiBaseUrl"] ?? "http://localhost:5133") });
 
 // Add Application Services
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -19,6 +19,7 @@ builder.Services.AddScoped<IMaterialService, MaterialService>();
 
 // Add Authentication
 builder.Services.AddAuthorizationCore();
+builder.Services.AddCascadingAuthenticationState();
 
 var app = builder.Build();
 

@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 4,
   "targets": {
     "net10.0": {
       "Microsoft.AspNetCore.App.Internal.Assets/10.0.10": {
@@ -89,33 +89,41 @@
     ]
   },
   "packageFolders": {
-    "/home/ubuntu/.nuget/packages/": {}
+    "C:\\Users\\gustavo.melo\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Web/VulkanosAcademy.Web.csproj",
+      "projectUniqueName": "C:\\Users\\gustavo.melo\\Documents\\Vulkanos_Academy\\VulkanosAcademy.Web\\VulkanosAcademy.Web.csproj",
       "projectName": "VulkanosAcademy.Web",
-      "projectPath": "/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Web/VulkanosAcademy.Web.csproj",
-      "packagesPath": "/home/ubuntu/.nuget/packages/",
-      "outputPath": "/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Web/obj/",
+      "projectPath": "C:\\Users\\gustavo.melo\\Documents\\Vulkanos_Academy\\VulkanosAcademy.Web\\VulkanosAcademy.Web.csproj",
+      "packagesPath": "C:\\Users\\gustavo.melo\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\gustavo.melo\\Documents\\Vulkanos_Academy\\VulkanosAcademy.Web\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "/home/ubuntu/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\gustavo.melo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net10.0"
       ],
       "sources": {
-        "/usr/lib/dotnet/library-packs": {},
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net10.0": {
+          "framework": "net10.0",
           "targetAlias": "net10.0",
           "projectReferences": {
-            "/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Domain/VulkanosAcademy.Domain.csproj": {
-              "projectPath": "/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Domain/VulkanosAcademy.Domain.csproj"
+            "C:\\Users\\gustavo.melo\\Documents\\Vulkanos_Academy\\VulkanosAcademy.Domain\\VulkanosAcademy.Domain.csproj": {
+              "projectPath": "C:\\Users\\gustavo.melo\\Documents\\Vulkanos_Academy\\VulkanosAcademy.Domain\\VulkanosAcademy.Domain.csproj"
             }
           }
         }
@@ -130,10 +138,11 @@
         "auditLevel": "low",
         "auditMode": "all"
       },
-      "SdkAnalysisLevel": "10.0.100"
+      "SdkAnalysisLevel": "10.0.300"
     },
     "frameworks": {
       "net10.0": {
+        "framework": "net10.0",
         "targetAlias": "net10.0",
         "dependencies": {
           "Microsoft.AspNetCore.App.Internal.Assets": {
@@ -166,7 +175,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/10.0.110/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.302/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.AspNetCore": "(,10.0.32767]",
           "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",
@@ -589,7 +598,7 @@
       "code": "NU1701",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "Package 'System.Net.Http.Formatting.Extension 5.2.3' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net10.0'. This package may not be fully compatible with your project.",
+      "message": "O pacote 'System.Net.Http.Formatting.Extension 5.2.3' foi restaurado usando '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' em vez da estrutura de destino do projeto 'net10.0'. Esse pacote pode não ser totalmente compatível com o seu projeto.",
       "libraryId": "System.Net.Http.Formatting.Extension",
       "targetGraphs": [
         "net10.0"

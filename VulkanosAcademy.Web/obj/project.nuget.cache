@@ -1,20 +1,20 @@
 {
   "version": 2,
-  "dgSpecHash": "b/JxdUnRSB8=",
+  "dgSpecHash": "P/EvPtRMjbo=",
   "success": true,
-  "projectFilePath": "/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Web/VulkanosAcademy.Web.csproj",
+  "projectFilePath": "C:\\Users\\gustavo.melo\\Documents\\Vulkanos_Academy\\VulkanosAcademy.Web\\VulkanosAcademy.Web.csproj",
   "expectedPackageFiles": [
-    "/home/ubuntu/.nuget/packages/microsoft.aspnetcore.app.internal.assets/10.0.10/microsoft.aspnetcore.app.internal.assets.10.0.10.nupkg.sha512",
-    "/home/ubuntu/.nuget/packages/system.net.http.formatting.extension/5.2.3/system.net.http.formatting.extension.5.2.3.nupkg.sha512"
+    "C:\\Users\\gustavo.melo\\.nuget\\packages\\microsoft.aspnetcore.app.internal.assets\\10.0.10\\microsoft.aspnetcore.app.internal.assets.10.0.10.nupkg.sha512",
+    "C:\\Users\\gustavo.melo\\.nuget\\packages\\system.net.http.formatting.extension\\5.2.3\\system.net.http.formatting.extension.5.2.3.nupkg.sha512"
   ],
   "logs": [
     {
       "code": "NU1701",
       "level": "Warning",
-      "message": "Package 'System.Net.Http.Formatting.Extension 5.2.3' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net10.0'. This package may not be fully compatible with your project.",
-      "projectPath": "/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Web/VulkanosAcademy.Web.csproj",
+      "message": "O pacote 'System.Net.Http.Formatting.Extension 5.2.3' foi restaurado usando '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' em vez da estrutura de destino do projeto 'net10.0'. Esse pacote pode não ser totalmente compatível com o seu projeto.",
+      "projectPath": "C:\\Users\\gustavo.melo\\Documents\\Vulkanos_Academy\\VulkanosAcademy.Web\\VulkanosAcademy.Web.csproj",
       "warningLevel": 1,
-      "filePath": "/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Web/VulkanosAcademy.Web.csproj",
+      "filePath": "C:\\Users\\gustavo.melo\\Documents\\Vulkanos_Academy\\VulkanosAcademy.Web\\VulkanosAcademy.Web.csproj",
       "libraryId": "System.Net.Http.Formatting.Extension",
       "targetGraphs": [
         "net10.0"

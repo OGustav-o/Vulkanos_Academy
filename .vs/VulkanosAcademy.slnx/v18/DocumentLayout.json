@@ -1,0 +1,224 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\gustavo.melo\\Documents\\Vulkanos_Academy\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{403A2CA9-2DA2-3951-2474-2453767CD969}|VulkanosAcademy.Web\\VulkanosAcademy.Web.csproj|c:\\users\\gustavo.melo\\documents\\vulkanos_academy\\vulkanosacademy.web\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{403A2CA9-2DA2-3951-2474-2453767CD969}|VulkanosAcademy.Web\\VulkanosAcademy.Web.csproj|solutionrelative:vulkanosacademy.web\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{403A2CA9-2DA2-3951-2474-2453767CD969}|VulkanosAcademy.Web\\VulkanosAcademy.Web.csproj|c:\\users\\gustavo.melo\\documents\\vulkanos_academy\\vulkanosacademy.web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{403A2CA9-2DA2-3951-2474-2453767CD969}|VulkanosAcademy.Web\\VulkanosAcademy.Web.csproj|solutionrelative:vulkanosacademy.web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{403A2CA9-2DA2-3951-2474-2453767CD969}|VulkanosAcademy.Web\\VulkanosAcademy.Web.csproj|c:\\users\\gustavo.melo\\documents\\vulkanos_academy\\vulkanosacademy.web\\components\\routes.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{403A2CA9-2DA2-3951-2474-2453767CD969}|VulkanosAcademy.Web\\VulkanosAcademy.Web.csproj|solutionrelative:vulkanosacademy.web\\components\\routes.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{403A2CA9-2DA2-3951-2474-2453767CD969}|VulkanosAcademy.Web\\VulkanosAcademy.Web.csproj|c:\\users\\gustavo.melo\\documents\\vulkanos_academy\\vulkanosacademy.web\\components\\pages\\lessonplayer.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{403A2CA9-2DA2-3951-2474-2453767CD969}|VulkanosAcademy.Web\\VulkanosAcademy.Web.csproj|solutionrelative:vulkanosacademy.web\\components\\pages\\lessonplayer.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{403A2CA9-2DA2-3951-2474-2453767CD969}|VulkanosAcademy.Web\\VulkanosAcademy.Web.csproj|c:\\users\\gustavo.melo\\documents\\vulkanos_academy\\vulkanosacademy.web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{403A2CA9-2DA2-3951-2474-2453767CD969}|VulkanosAcademy.Web\\VulkanosAcademy.Web.csproj|solutionrelative:vulkanosacademy.web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{403A2CA9-2DA2-3951-2474-2453767CD969}|VulkanosAcademy.Web\\VulkanosAcademy.Web.csproj|c:\\users\\gustavo.melo\\documents\\vulkanos_academy\\vulkanosacademy.web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{403A2CA9-2DA2-3951-2474-2453767CD969}|VulkanosAcademy.Web\\VulkanosAcademy.Web.csproj|solutionrelative:vulkanosacademy.web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{403A2CA9-2DA2-3951-2474-2453767CD969}|VulkanosAcademy.Web\\VulkanosAcademy.Web.csproj|c:\\users\\gustavo.melo\\documents\\vulkanos_academy\\vulkanosacademy.web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{403A2CA9-2DA2-3951-2474-2453767CD969}|VulkanosAcademy.Web\\VulkanosAcademy.Web.csproj|solutionrelative:vulkanosacademy.web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{403A2CA9-2DA2-3951-2474-2453767CD969}|VulkanosAcademy.Web\\VulkanosAcademy.Web.csproj|c:\\users\\gustavo.melo\\documents\\vulkanos_academy\\vulkanosacademy.web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{403A2CA9-2DA2-3951-2474-2453767CD969}|VulkanosAcademy.Web\\VulkanosAcademy.Web.csproj|solutionrelative:vulkanosacademy.web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{403A2CA9-2DA2-3951-2474-2453767CD969}|VulkanosAcademy.Web\\VulkanosAcademy.Web.csproj|c:\\users\\gustavo.melo\\documents\\vulkanos_academy\\vulkanosacademy.web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{403A2CA9-2DA2-3951-2474-2453767CD969}|VulkanosAcademy.Web\\VulkanosAcademy.Web.csproj|solutionrelative:vulkanosacademy.web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{403A2CA9-2DA2-3951-2474-2453767CD969}|VulkanosAcademy.Web\\VulkanosAcademy.Web.csproj|c:\\users\\gustavo.melo\\documents\\vulkanos_academy\\vulkanosacademy.web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{403A2CA9-2DA2-3951-2474-2453767CD969}|VulkanosAcademy.Web\\VulkanosAcademy.Web.csproj|solutionrelative:vulkanosacademy.web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{403A2CA9-2DA2-3951-2474-2453767CD969}|VulkanosAcademy.Web\\VulkanosAcademy.Web.csproj|c:\\users\\gustavo.melo\\documents\\vulkanos_academy\\vulkanosacademy.web\\components\\_imports.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{403A2CA9-2DA2-3951-2474-2453767CD969}|VulkanosAcademy.Web\\VulkanosAcademy.Web.csproj|solutionrelative:vulkanosacademy.web\\components\\_imports.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{403A2CA9-2DA2-3951-2474-2453767CD969}|VulkanosAcademy.Web\\VulkanosAcademy.Web.csproj|c:\\users\\gustavo.melo\\documents\\vulkanos_academy\\vulkanosacademy.web\\components\\layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{403A2CA9-2DA2-3951-2474-2453767CD969}|VulkanosAcademy.Web\\VulkanosAcademy.Web.csproj|solutionrelative:vulkanosacademy.web\\components\\layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\gustavo.melo\\Documents\\Vulkanos_Academy\\VulkanosAcademy.Web\\appsettings.json",
+              "RelativeDocumentMoniker": "VulkanosAcademy.Web\\appsettings.json",
+              "ToolTip": "C:\\Users\\gustavo.melo\\Documents\\Vulkanos_Academy\\VulkanosAcademy.Web\\appsettings.json",
+              "RelativeToolTip": "VulkanosAcademy.Web\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-07-16T16:30:38.681Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\gustavo.melo\\Documents\\Vulkanos_Academy\\VulkanosAcademy.Web\\Program.cs",
+              "RelativeDocumentMoniker": "VulkanosAcademy.Web\\Program.cs",
+              "ToolTip": "C:\\Users\\gustavo.melo\\Documents\\Vulkanos_Academy\\VulkanosAcademy.Web\\Program.cs",
+              "RelativeToolTip": "VulkanosAcademy.Web\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAB0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-16T16:16:03.957Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Routes.razor",
+              "DocumentMoniker": "C:\\Users\\gustavo.melo\\Documents\\Vulkanos_Academy\\VulkanosAcademy.Web\\Components\\Routes.razor",
+              "RelativeDocumentMoniker": "VulkanosAcademy.Web\\Components\\Routes.razor",
+              "ToolTip": "C:\\Users\\gustavo.melo\\Documents\\Vulkanos_Academy\\VulkanosAcademy.Web\\Components\\Routes.razor",
+              "RelativeToolTip": "VulkanosAcademy.Web\\Components\\Routes.razor",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAAAwAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-16T16:15:01.329Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "bootstrap-reboot.min.css",
+              "DocumentMoniker": "C:\\Users\\gustavo.melo\\Documents\\Vulkanos_Academy\\VulkanosAcademy.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
+              "RelativeDocumentMoniker": "VulkanosAcademy.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
+              "ToolTip": "C:\\Users\\gustavo.melo\\Documents\\Vulkanos_Academy\\VulkanosAcademy.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
+              "RelativeToolTip": "VulkanosAcademy.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-07-16T16:02:26.885Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "bootstrap.rtl.min.css",
+              "DocumentMoniker": "C:\\Users\\gustavo.melo\\Documents\\Vulkanos_Academy\\VulkanosAcademy.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
+              "RelativeDocumentMoniker": "VulkanosAcademy.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
+              "ToolTip": "C:\\Users\\gustavo.melo\\Documents\\Vulkanos_Academy\\VulkanosAcademy.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
+              "RelativeToolTip": "VulkanosAcademy.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAADpAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-07-16T16:01:23.989Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "bootstrap.min.css",
+              "DocumentMoniker": "C:\\Users\\gustavo.melo\\Documents\\Vulkanos_Academy\\VulkanosAcademy.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
+              "RelativeDocumentMoniker": "VulkanosAcademy.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
+              "ToolTip": "C:\\Users\\gustavo.melo\\Documents\\Vulkanos_Academy\\VulkanosAcademy.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
+              "RelativeToolTip": "VulkanosAcademy.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAACKCQAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-07-16T16:00:44.354Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "bootstrap-utilities.rtl.min.css",
+              "DocumentMoniker": "C:\\Users\\gustavo.melo\\Documents\\Vulkanos_Academy\\VulkanosAcademy.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
+              "RelativeDocumentMoniker": "VulkanosAcademy.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
+              "ToolTip": "C:\\Users\\gustavo.melo\\Documents\\Vulkanos_Academy\\VulkanosAcademy.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
+              "RelativeToolTip": "VulkanosAcademy.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAABBCQAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-07-16T16:00:10.632Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "bootstrap.rtl.css",
+              "DocumentMoniker": "C:\\Users\\gustavo.melo\\Documents\\Vulkanos_Academy\\VulkanosAcademy.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
+              "RelativeDocumentMoniker": "VulkanosAcademy.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
+              "ToolTip": "C:\\Users\\gustavo.melo\\Documents\\Vulkanos_Academy\\VulkanosAcademy.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
+              "RelativeToolTip": "VulkanosAcademy.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
+              "ViewState": "AgIAAHcAAAAAAAAAAAAowIcAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-07-16T15:55:00.574Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "bootstrap.css",
+              "DocumentMoniker": "C:\\Users\\gustavo.melo\\Documents\\Vulkanos_Academy\\VulkanosAcademy.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
+              "RelativeDocumentMoniker": "VulkanosAcademy.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
+              "ToolTip": "C:\\Users\\gustavo.melo\\Documents\\Vulkanos_Academy\\VulkanosAcademy.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
+              "RelativeToolTip": "VulkanosAcademy.Web\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
+              "ViewState": "AgIAAEYAAAAAAAAAAAAowFAAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-07-16T14:43:51.154Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "LessonPlayer.razor",
+              "DocumentMoniker": "C:\\Users\\gustavo.melo\\Documents\\Vulkanos_Academy\\VulkanosAcademy.Web\\Components\\Pages\\LessonPlayer.razor",
+              "RelativeDocumentMoniker": "VulkanosAcademy.Web\\Components\\Pages\\LessonPlayer.razor",
+              "ToolTip": "C:\\Users\\gustavo.melo\\Documents\\Vulkanos_Academy\\VulkanosAcademy.Web\\Components\\Pages\\LessonPlayer.razor",
+              "RelativeToolTip": "VulkanosAcademy.Web\\Components\\Pages\\LessonPlayer.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAMAAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-16T14:39:05.503Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "MainLayout.razor",
+              "DocumentMoniker": "C:\\Users\\gustavo.melo\\Documents\\Vulkanos_Academy\\VulkanosAcademy.Web\\Components\\Layout\\MainLayout.razor",
+              "RelativeDocumentMoniker": "VulkanosAcademy.Web\\Components\\Layout\\MainLayout.razor",
+              "ToolTip": "C:\\Users\\gustavo.melo\\Documents\\Vulkanos_Academy\\VulkanosAcademy.Web\\Components\\Layout\\MainLayout.razor",
+              "RelativeToolTip": "VulkanosAcademy.Web\\Components\\Layout\\MainLayout.razor",
+              "ViewState": "AgIAAC0AAAAAAAAAAAAAADoAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-16T14:39:32.082Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "_Imports.razor",
+              "DocumentMoniker": "C:\\Users\\gustavo.melo\\Documents\\Vulkanos_Academy\\VulkanosAcademy.Web\\Components\\_Imports.razor",
+              "RelativeDocumentMoniker": "VulkanosAcademy.Web\\Components\\_Imports.razor",
+              "ToolTip": "C:\\Users\\gustavo.melo\\Documents\\Vulkanos_Academy\\VulkanosAcademy.Web\\Components\\_Imports.razor",
+              "RelativeToolTip": "VulkanosAcademy.Web\\Components\\_Imports.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-07-16T14:35:42.565Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

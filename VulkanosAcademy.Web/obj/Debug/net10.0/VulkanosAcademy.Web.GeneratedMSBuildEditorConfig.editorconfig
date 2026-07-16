@@ -8,76 +8,81 @@ build_property.ProjectTypeGuids =
 build_property.InvariantGlobalization = 
 build_property.PlatformNeutralAssembly = 
 build_property.EnforceExtendedAnalyzerRules = 
+build_property.EntryPointFilePath = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = VulkanosAcademy.Web
 build_property.RootNamespace = VulkanosAcademy.Web
-build_property.ProjectDir = /home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Web/
+build_property.ProjectDir = C:\Users\gustavo.melo\Documents\Vulkanos_Academy\VulkanosAcademy.Web\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
-build_property.RazorLangVersion = 9.0
+build_property.RazorLangVersion = 10.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = /home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Web
+build_property.MSBuildProjectDirectory = C:\Users\gustavo.melo\Documents\Vulkanos_Academy\VulkanosAcademy.Web
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 10.0
 build_property.EnableCodeStyleSeverity = 
 
-[/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Web/Components/App.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9BcHAucmF6b3I=
+[C:/Users/gustavo.melo/Documents/Vulkanos_Academy/VulkanosAcademy.Web/Components/App.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHAucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Web/Components/Pages/Counter.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Db3VudGVyLnJhem9y
+[C:/Users/gustavo.melo/Documents/Vulkanos_Academy/VulkanosAcademy.Web/Components/Layout/EmptyLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcRW1wdHlMYXlvdXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Web/Components/Pages/Dashboard.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9EYXNoYm9hcmQucmF6b3I=
+[C:/Users/gustavo.melo/Documents/Vulkanos_Academy/VulkanosAcademy.Web/Components/Pages/CourseManagement.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDb3Vyc2VNYW5hZ2VtZW50LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Web/Components/Pages/Error.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9FcnJvci5yYXpvcg==
+[C:/Users/gustavo.melo/Documents/Vulkanos_Academy/VulkanosAcademy.Web/Components/Pages/Dashboard.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xEYXNoYm9hcmQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Web/Components/Pages/Home.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Ib21lLnJhem9y
+[C:/Users/gustavo.melo/Documents/Vulkanos_Academy/VulkanosAcademy.Web/Components/Pages/Error.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFcnJvci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Web/Components/Pages/Login.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Mb2dpbi5yYXpvcg==
+[C:/Users/gustavo.melo/Documents/Vulkanos_Academy/VulkanosAcademy.Web/Components/Pages/Home.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xIb21lLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Web/Components/Pages/NotFound.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Ob3RGb3VuZC5yYXpvcg==
+[C:/Users/gustavo.melo/Documents/Vulkanos_Academy/VulkanosAcademy.Web/Components/Pages/LessonPlayer.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xMZXNzb25QbGF5ZXIucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Web/Components/Pages/ProducerDashboard.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9Qcm9kdWNlckRhc2hib2FyZC5yYXpvcg==
+[C:/Users/gustavo.melo/Documents/Vulkanos_Academy/VulkanosAcademy.Web/Components/Pages/Login.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xMb2dpbi5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Web/Components/Pages/Register.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9SZWdpc3Rlci5yYXpvcg==
+[C:/Users/gustavo.melo/Documents/Vulkanos_Academy/VulkanosAcademy.Web/Components/Pages/NotFound.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xOb3RGb3VuZC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Web/Components/Pages/Weather.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9QYWdlcy9XZWF0aGVyLnJhem9y
+[C:/Users/gustavo.melo/Documents/Vulkanos_Academy/VulkanosAcademy.Web/Components/Pages/ProducerDashboard.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xQcm9kdWNlckRhc2hib2FyZC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Web/Components/Routes.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9Sb3V0ZXMucmF6b3I=
+[C:/Users/gustavo.melo/Documents/Vulkanos_Academy/VulkanosAcademy.Web/Components/Pages/Register.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xSZWdpc3Rlci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Web/Components/_Imports.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9fSW1wb3J0cy5yYXpvcg==
+[C:/Users/gustavo.melo/Documents/Vulkanos_Academy/VulkanosAcademy.Web/Components/Routes.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb3V0ZXMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Web/Components/Layout/MainLayout.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9MYXlvdXQvTWFpbkxheW91dC5yYXpvcg==
-build_metadata.AdditionalFiles.CssScope = b-w5kglf2y0x
+[C:/Users/gustavo.melo/Documents/Vulkanos_Academy/VulkanosAcademy.Web/Components/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xfSW1wb3J0cy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
 
-[/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Web/Components/Layout/NavMenu.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9MYXlvdXQvTmF2TWVudS5yYXpvcg==
-build_metadata.AdditionalFiles.CssScope = b-jtqo66hiuf
+[C:/Users/gustavo.melo/Documents/Vulkanos_Academy/VulkanosAcademy.Web/Components/Layout/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTWFpbkxheW91dC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-fitgfvjk5k
 
-[/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Web/Components/Layout/ReconnectModal.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9MYXlvdXQvUmVjb25uZWN0TW9kYWwucmF6b3I=
-build_metadata.AdditionalFiles.CssScope = b-x5xfv1whdu
+[C:/Users/gustavo.melo/Documents/Vulkanos_Academy/VulkanosAcademy.Web/Components/Layout/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTmF2TWVudS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-2yyaamhmk5
+
+[C:/Users/gustavo.melo/Documents/Vulkanos_Academy/VulkanosAcademy.Web/Components/Layout/ReconnectModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcUmVjb25uZWN0TW9kYWwucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-88xphpudcn

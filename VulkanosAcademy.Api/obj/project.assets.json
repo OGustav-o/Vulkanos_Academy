@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 4,
   "targets": {
     "net10.0": {
       "Azure.Core/1.47.1": {
@@ -3259,36 +3259,44 @@
     ]
   },
   "packageFolders": {
-    "/home/ubuntu/.nuget/packages/": {}
+    "C:\\Users\\gustavo.melo\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Api/VulkanosAcademy.Api.csproj",
+      "projectUniqueName": "C:\\Users\\gustavo.melo\\Documents\\Vulkanos_Academy\\VulkanosAcademy.Api\\VulkanosAcademy.Api.csproj",
       "projectName": "VulkanosAcademy.Api",
-      "projectPath": "/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Api/VulkanosAcademy.Api.csproj",
-      "packagesPath": "/home/ubuntu/.nuget/packages/",
-      "outputPath": "/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Api/obj/",
+      "projectPath": "C:\\Users\\gustavo.melo\\Documents\\Vulkanos_Academy\\VulkanosAcademy.Api\\VulkanosAcademy.Api.csproj",
+      "packagesPath": "C:\\Users\\gustavo.melo\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\gustavo.melo\\Documents\\Vulkanos_Academy\\VulkanosAcademy.Api\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "/home/ubuntu/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\gustavo.melo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net10.0"
       ],
       "sources": {
-        "/usr/lib/dotnet/library-packs": {},
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net10.0": {
+          "framework": "net10.0",
           "targetAlias": "net10.0",
           "projectReferences": {
-            "/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Data/VulkanosAcademy.Data.csproj": {
-              "projectPath": "/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Data/VulkanosAcademy.Data.csproj"
+            "C:\\Users\\gustavo.melo\\Documents\\Vulkanos_Academy\\VulkanosAcademy.Data\\VulkanosAcademy.Data.csproj": {
+              "projectPath": "C:\\Users\\gustavo.melo\\Documents\\Vulkanos_Academy\\VulkanosAcademy.Data\\VulkanosAcademy.Data.csproj"
             },
-            "/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Domain/VulkanosAcademy.Domain.csproj": {
-              "projectPath": "/home/ubuntu/vulkanos_academy_project/VulkanosAcademy.Domain/VulkanosAcademy.Domain.csproj"
+            "C:\\Users\\gustavo.melo\\Documents\\Vulkanos_Academy\\VulkanosAcademy.Domain\\VulkanosAcademy.Domain.csproj": {
+              "projectPath": "C:\\Users\\gustavo.melo\\Documents\\Vulkanos_Academy\\VulkanosAcademy.Domain\\VulkanosAcademy.Domain.csproj"
             }
           }
         }
@@ -3303,10 +3311,11 @@
         "auditLevel": "low",
         "auditMode": "all"
       },
-      "SdkAnalysisLevel": "10.0.100"
+      "SdkAnalysisLevel": "10.0.300"
     },
     "frameworks": {
       "net10.0": {
+        "framework": "net10.0",
         "targetAlias": "net10.0",
         "dependencies": {
           "Microsoft.AspNetCore.Authentication.JwtBearer": {
@@ -3347,7 +3356,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/10.0.110/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.302/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.AspNetCore": "(,10.0.32767]",
           "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",
@@ -3770,7 +3779,7 @@
       "code": "NU1903",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "Package 'Microsoft.OpenApi' 2.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-v5pm-xwqc-g5wc",
+      "message": "O pacote 'Microsoft.OpenApi' 2.0.0 tem uma alta vulnerabilidade de gravidade conhecida, https://github.com/advisories/GHSA-v5pm-xwqc-g5wc",
       "libraryId": "Microsoft.OpenApi",
       "targetGraphs": [
         "net10.0"
