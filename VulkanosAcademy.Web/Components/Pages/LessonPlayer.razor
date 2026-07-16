@@ -5,6 +5,7 @@
 @inject IMaterialService MaterialService
 @inject NavigationManager Navigation
 @inject IJSRuntime JSRuntime
+@inject ICourseService CourseService
 
 <div class="player-layout">
     <div class="player-main">
@@ -61,6 +62,9 @@
                 <li class="nav-item" role="presentation">
                     <button class="nav-link bg-transparent border-0 text-white" id="mat-tab" data-bs-toggle="tab" data-bs-target="#mat" type="button" role="tab">MATERIAIS (@(materials?.Count() ?? 0))</button>
                 </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link bg-transparent border-0 text-white" id="com-tab" data-bs-toggle="tab" data-bs-target="#com" type="button" role="tab">COMENTÁRIOS</button>
+                </li>
             </ul>
 
             <div class="tab-content" id="lessonTabsContent">
@@ -80,7 +84,7 @@
                             @foreach (var m in materials)
                             {
                                 <a href="@m.MaterialUrl" target="_blank" class="list-group-item bg-transparent text-white border-secondary px-0 d-flex align-items-center">
-                                    <span class="bi bi-file-earmark-text text-orange me-3 fs-4"></span>
+                                    <span class="bi @(m.Type == "PDF" ? "bi-file-pdf text-danger" : "bi-link-45deg text-info") me-3 fs-4"></span>
                                     <div>
                                         <h6 class="mb-0">@m.Title</h6>
                                         <small class="text-muted">@m.Type</small>
@@ -90,6 +94,25 @@
                             }
                         </div>
                     }
+                </div>
+                <div class="tab-pane fade" id="com" role="tabpanel">
+                    <div class="comments-section">
+                        <div class="add-comment-form mb-4 p-3 border rounded bg-dark">
+                            <h6 class="mb-3">Deixe seu comentário</h6>
+                            <form @onsubmit="AddComment">
+                                <textarea class="form-control mb-2" rows="3" @bind="newCommentText" placeholder="Escreva sua dúvida ou comentário aqui..."></textarea>
+                                <div class="d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-primary btn-sm" disabled="@string.IsNullOrWhiteSpace(newCommentText)">
+                                        <span class="bi bi-send me-1"></span> Enviar
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="text-center py-4 text-muted">
+                            <span class="bi bi-chat-left-text display-4 d-block mb-2"></span>
+                            <p>Seção de comentários em desenvolvimento. Em breve você poderá interagir com outros alunos!</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -215,6 +238,7 @@
     private bool isLoading = true;
     private int currentLessonIndex = 0;
     private string currentModuleTitle = "";
+    private string newCommentText = "";
 
     protected override async Task OnParametersSetAsync()
     {
@@ -258,4 +282,14 @@
     }
 
     private void GoBackToCourse() => Navigation.NavigateTo($"/course/{CourseId}");
+
+    private async Task AddComment()
+    {
+        if (!string.IsNullOrWhiteSpace(newCommentText)) {
+            // TODO: Implementar chamada para o serviço de comentários
+            // var comment = await CommentService.CreateCommentAsync(new CreateCommentDto { LessonId = LessonId, Content = newCommentText });
+            newCommentText = "";
+            // await LoadLessonData();
+        }
+    }
 }

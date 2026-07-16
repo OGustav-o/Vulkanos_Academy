@@ -1,0 +1,342 @@
+@page "/course/{CourseId:guid}"
+@using VulkanosAcademy.Domain.DTOs
+@inject ICourseService CourseService
+@inject IModuleService ModuleService
+@inject ILessonService LessonService
+@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+
+<div class="container-fluid py-4">
+    @if (isLoading)
+    {
+        <div class="text-center py-5">
+            <div class="spinner-border text-orange" role="status">
+                <span class="visually-hidden">Carregando...</span>
+            </div>
+        </div>
+    }
+    else if (course == null)
+    {
+        <div class="alert alert-warning" role="alert">
+            <span class="bi bi-exclamation-triangle me-2"></span>
+            Curso não encontrado.
+        </div>
+        <button class="btn btn-primary" @onclick="() => Navigation.NavigateTo('/dashboard')">Voltar para Dashboard</button>
+    }
+    else
+    {
+        <!-- Course Header -->
+        <div class="course-header mb-5">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <nav aria-label="breadcrumb" class="mb-3">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
+                            <li class="breadcrumb-item active text-white" aria-current="page">@course.Title</li>
+                        </ol>
+                    </nav>
+                    <h1 class="display-5 text-white mb-3">@course.Title</h1>
+                    <p class="lead text-muted mb-4">@course.Description</p>
+                    <div class="d-flex gap-3 align-items-center">
+                        <div class="course-meta">
+                            <span class="badge bg-orange text-dark me-2">
+                                <span class="bi bi-collection me-1"></span> @modules.Count() módulos
+                            </span>
+                            <span class="badge bg-secondary text-white">
+                                <span class="bi bi-play-circle me-1"></span> @totalLessons aulas
+                            </span>
+                        </div>
+                        @if (course.Price.HasValue && course.Price > 0)
+                        {
+                            <div class="price-badge">
+                                <h4 class="text-orange mb-0">R$ @course.Price?.ToString("F2")</h4>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="price-badge">
+                                <h4 class="text-success mb-0">Grátis</h4>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    @if (!string.IsNullOrEmpty(course.ThumbnailUrl))
+                    {
+                        <img src="@course.ThumbnailUrl" alt="@course.Title" class="img-fluid rounded-3" style="max-height: 300px; object-fit: cover;" />
+                    }
+                    else
+                    {
+                        <div class="bg-dark rounded-3 d-flex align-items-center justify-content-center" style="height: 300px;">
+                            <span class="bi bi-image display-1 text-muted"></span>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Course Content -->
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="course-content">
+                    <h3 class="mb-4">Conteúdo do Curso</h3>
+                    
+                    @if (!modules.Any())
+                    {
+                        <div class="alert alert-info" role="alert">
+                            <span class="bi bi-info-circle me-2"></span>
+                            Este curso ainda não possui módulos configurados.
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="accordion accordion-flush" id="courseAccordion">
+                            @foreach (var module in modules.OrderBy(m => m.Order))
+                            {
+                                var moduleLessons = lessons.Where(l => l.ModuleId == module.Id).OrderBy(l => l.Order).ToList();
+                                
+                                <div class="accordion-item bg-dark border-secondary mb-3 rounded">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button bg-dark text-white collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#module-@module.Id">
+                                            <span class="bi bi-folder me-2 text-orange"></span>
+                                            <strong>@module.Title</strong>
+                                            <span class="badge bg-orange text-dark ms-auto">@moduleLessons.Count aulas</span>
+                                        </button>
+                                    </h2>
+                                    <div id="module-@module.Id" class="accordion-collapse collapse" data-bs-parent="#courseAccordion">
+                                        <div class="accordion-body p-0">
+                                            @if (!moduleLessons.Any())
+                                            {
+                                                <div class="p-3 text-muted small">
+                                                    <span class="bi bi-info-circle me-1"></span> Nenhuma aula neste módulo
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="list-group list-group-flush">
+                                                    @foreach (var lesson in moduleLessons)
+                                                    {
+                                                        <div class="list-group-item bg-transparent border-secondary py-3 px-4 d-flex justify-content-between align-items-center">
+                                                            <div class="d-flex align-items-center flex-grow-1">
+                                                                <span class="bi bi-play-circle text-orange me-3 fs-5"></span>
+                                                                <div>
+                                                                    <h6 class="mb-0 text-white">@lesson.Title</h6>
+                                                                    @if (!string.IsNullOrEmpty(lesson.Description))
+                                                                    {
+                                                                        <small class="text-muted d-block">@lesson.Description</small>
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                            <button class="btn btn-sm btn-outline-primary ms-3" @onclick="() => StartLesson(module.Id, lesson.Id)">
+                                                                <span class="bi bi-play me-1"></span> Assistir
+                                                            </button>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <div class="course-sidebar sticky-top" style="top: 20px;">
+                    <!-- Enrollment Card -->
+                    <div class="card bg-dark border-secondary mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title text-orange mb-3">Sobre este Curso</h5>
+                            <div class="course-info mb-3">
+                                <div class="info-item mb-2">
+                                    <span class="text-muted small">Instrutor:</span>
+                                    <p class="mb-0 text-white">@(course.Instructor?.FirstName ?? "Não informado") @(course.Instructor?.LastName ?? "")</p>
+                                </div>
+                                <div class="info-item mb-2">
+                                    <span class="text-muted small">Status:</span>
+                                    <p class="mb-0">
+                                        <span class="badge @GetStatusBadgeClass(course.Status)">@course.Status</span>
+                                    </p>
+                                </div>
+                                <div class="info-item">
+                                    <span class="text-muted small">Data de Criação:</span>
+                                    <p class="mb-0 text-white">@course.CreatedAt.ToString("dd/MM/yyyy")</p>
+                                </div>
+                            </div>
+                            <hr class="border-secondary" />
+                            <button class="btn btn-primary w-100 mb-2" @onclick="EnrollCourse">
+                                <span class="bi bi-plus-circle me-2"></span> MATRICULAR-SE
+                            </button>
+                            <button class="btn btn-outline-secondary w-100" @onclick="() => Navigation.NavigateTo('/dashboard')">
+                                <span class="bi bi-arrow-left me-2"></span> Voltar
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Course Stats -->
+                    <div class="card bg-dark border-secondary">
+                        <div class="card-body">
+                            <h5 class="card-title text-orange mb-3">Estatísticas</h5>
+                            <div class="stat-item mb-3">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="text-muted small">Módulos</span>
+                                    <span class="text-white fw-bold">@modules.Count()</span>
+                                </div>
+                            </div>
+                            <div class="stat-item mb-3">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="text-muted small">Total de Aulas</span>
+                                    <span class="text-white fw-bold">@totalLessons</span>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="text-muted small">Preço</span>
+                                    <span class="text-orange fw-bold">@(course.Price.HasValue && course.Price > 0 ? $"R$ {course.Price:F2}" : "Grátis")</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    .course-header {
+        background: linear-gradient(135deg, rgba(255, 102, 0, 0.1) 0%, rgba(255, 102, 0, 0.05) 100%);
+        padding: 2rem;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 102, 0, 0.2);
+    }
+    
+    .course-meta .badge {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.9rem;
+    }
+    
+    .price-badge {
+        background-color: #121212;
+        padding: 1rem;
+        border-radius: 8px;
+        border: 1px solid #222;
+    }
+    
+    .accordion-item {
+        background-color: #121212;
+        border: 1px solid #333 !important;
+        border-radius: 8px !important;
+    }
+    
+    .accordion-button {
+        padding: 1rem;
+    }
+    
+    .accordion-button:not(.collapsed) {
+        background-color: rgba(255, 102, 0, 0.1);
+        color: #FF6600;
+    }
+    
+    .accordion-button::after {
+        filter: invert(1);
+    }
+    
+    .list-group-item {
+        background-color: transparent;
+        border-color: #333;
+    }
+    
+    .list-group-item:hover {
+        background-color: rgba(255, 102, 0, 0.05);
+    }
+    
+    .card {
+        background-color: #121212;
+        border: 1px solid #333 !important;
+        border-radius: 8px;
+    }
+    
+    .card-body {
+        padding: 1.5rem;
+    }
+    
+    .info-item {
+        padding: 0.75rem 0;
+    }
+    
+    .stat-item {
+        padding: 0.75rem 0;
+        border-bottom: 1px solid #222;
+    }
+    
+    .stat-item:last-child {
+        border-bottom: none;
+    }
+</style>
+
+@code {
+    [Parameter] public Guid CourseId { get; set; }
+    
+    private CourseDto? course;
+    private IEnumerable<ModuleDto> modules = new List<ModuleDto>();
+    private IEnumerable<LessonDto> lessons = new List<LessonDto>();
+    private bool isLoading = true;
+    private int totalLessons = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadCourseData();
+    }
+
+    private async Task LoadCourseData()
+    {
+        isLoading = true;
+        try {
+            course = await CourseService.GetCourseAsync(CourseId);
+            
+            if (course != null) {
+                modules = await ModuleService.GetModulesByCourseAsync(CourseId) ?? new List<ModuleDto>();
+                
+                var allLessons = new List<LessonDto>();
+                foreach (var module in modules) {
+                    var moduleLessons = await LessonService.GetLessonsByModuleAsync(module.Id);
+                    if (moduleLessons != null) {
+                        allLessons.AddRange(moduleLessons);
+                    }
+                }
+                lessons = allLessons;
+                totalLessons = allLessons.Count;
+            }
+        } catch (Exception ex) {
+            Console.WriteLine($"Erro ao carregar dados do curso: {ex.Message}");
+        }
+        isLoading = false;
+    }
+
+    private void StartLesson(Guid moduleId, Guid lessonId)
+    {
+        Navigation.NavigateTo($"/course/{CourseId}/module/{moduleId}/lesson/{lessonId}");
+    }
+
+    private async Task EnrollCourse()
+    {
+        // TODO: Implementar lógica de matrícula
+        // var enrollment = await EnrollmentService.CreateEnrollmentAsync(new CreateEnrollmentDto { CourseId = CourseId });
+        await JSRuntime.InvokeVoidAsync("alert", "Funcionalidade de matrícula em desenvolvimento!");
+    }
+
+    private string GetStatusBadgeClass(string status)
+    {
+        return status switch
+        {
+            "Published" => "bg-success",
+            "Draft" => "bg-warning text-dark",
+            "Archived" => "bg-secondary",
+            _ => "bg-secondary"
+        };
+    }
+}

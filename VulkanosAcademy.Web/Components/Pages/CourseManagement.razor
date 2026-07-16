@@ -3,6 +3,7 @@
 @inject ICourseService CourseService
 @inject IModuleService ModuleService
 @inject ILessonService LessonService
+@inject IMaterialService MaterialService
 @inject NavigationManager Navigation
 @inject IJSRuntime JSRuntime
 
@@ -84,25 +85,51 @@
                             <div class="lessons-list">
                                 @foreach (var lesson in moduleLessons)
                                 {
-                                    <div class="lesson-item p-3 d-flex justify-content-between align-items-center">
-                                        <div class="d-flex align-items-center">
-                                            <span class="bi bi-play-btn text-orange me-3"></span>
-                                            <div>
-                                                <h6 class="mb-0 text-white">@lesson.Title</h6>
-                                                @if (!string.IsNullOrEmpty(lesson.VideoUrl))
-                                                {
-                                                    <small class="text-muted"><span class="bi bi-link-45deg"></span> @lesson.VideoUrl</small>
-                                                }
+                                    <div class="lesson-item p-3">
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                            <div class="d-flex align-items-center flex-grow-1">
+                                                <span class="bi bi-play-btn text-orange me-3"></span>
+                                                <div>
+                                                    <h6 class="mb-0 text-white">@lesson.Title</h6>
+                                                    @if (!string.IsNullOrEmpty(lesson.VideoUrl))
+                                                    {
+                                                        <small class="text-muted"><span class="bi bi-link-45deg"></span> @lesson.VideoUrl</small>
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div class="lesson-actions">
+                                                <button class="btn btn-link text-muted btn-sm me-1" @onclick="() => EditLesson(lesson.Id)">
+                                                    <span class="bi bi-pencil"></span>
+                                                </button>
+                                                <button class="btn btn-link text-info btn-sm me-1" @onclick="() => ShowAddMaterialModal(lesson.Id)">
+                                                    <span class="bi bi-plus-circle"></span> Material
+                                                </button>
+                                                <button class="btn btn-link text-danger btn-sm" @onclick="() => DeleteLesson(lesson.Id)">
+                                                    <span class="bi bi-x-lg"></span>
+                                                </button>
                                             </div>
                                         </div>
-                                        <div class="lesson-actions">
-                                            <button class="btn btn-link text-muted btn-sm me-1" @onclick="() => EditLesson(lesson.Id)">
-                                                <span class="bi bi-pencil"></span>
-                                            </button>
-                                            <button class="btn btn-link text-danger btn-sm" @onclick="() => DeleteLesson(lesson.Id)">
-                                                <span class="bi bi-x-lg"></span>
-                                            </button>
-                                        </div>
+                                        @{
+                                            var lessonMaterials = materials.Where(m => m.LessonId == lesson.Id).ToList();
+                                        }
+                                        @if (lessonMaterials.Any())
+                                        {
+                                            <div class="materials-section ms-5 mt-2">
+                                                <small class="text-muted d-block mb-2">Materiais:</small>
+                                                @foreach (var material in lessonMaterials)
+                                                {
+                                                    <div class="material-item d-flex justify-content-between align-items-center mb-1">
+                                                        <span class="small text-secondary">
+                                                            <span class="bi @(material.Type == "PDF" ? "bi-file-pdf" : "bi-link-45deg") me-1"></span>
+                                                            @material.Title
+                                                        </span>
+                                                        <button class="btn btn-link btn-sm text-danger" @onclick="() => DeleteMaterial(material.Id)">
+                                                            <span class="bi bi-trash"></span>
+                                                        </button>
+                                                    </div>
+                                                }
+                                            </div>
+                                        }
                                     </div>
                                 }
                             </div>
@@ -114,7 +141,7 @@
     }
 </div>
 
-<!-- Modais (Mesma lógica, mas com estilos atualizados) -->
+<!-- Modais -->
 <div class="modal fade" id="moduleModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content bg-dark border-secondary">
@@ -185,6 +212,40 @@
     </div>
 </div>
 
+<div class="modal fade" id="materialModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark border-secondary">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title text-orange">ADICIONAR MATERIAL</h5>
+                <button type="button" class="btn-close btn-close-white" @onclick="HideAddMaterialModal"></button>
+            </div>
+            <div class="modal-body">
+                <form @onsubmit="SaveMaterial">
+                    <div class="mb-3">
+                        <label class="form-label small text-muted">Título do Material</label>
+                        <input type="text" class="form-control" @bind="newMaterial.Title" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small text-muted">Tipo de Material</label>
+                        <select class="form-select" @bind="newMaterial.Type" required>
+                            <option value="">Selecione o tipo...</option>
+                            <option value="PDF">PDF</option>
+                            <option value="Link">Link Externo</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small text-muted">URL do Material</label>
+                        <input type="url" class="form-control" @bind="newMaterial.MaterialUrl" required placeholder="https://..." />
+                    </div>
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-primary">ADICIONAR MATERIAL</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <style>
     .module-item {
         background-color: #121212;
@@ -219,6 +280,17 @@
     .lesson-item:hover {
         background-color: #1a1a1a;
     }
+
+    .materials-section {
+        background-color: rgba(255, 102, 0, 0.05);
+        padding: 0.75rem;
+        border-radius: 4px;
+        border-left: 2px solid #FF6600;
+    }
+
+    .material-item {
+        padding: 0.5rem 0;
+    }
     
     .btn-orange-outline {
         color: #FF6600;
@@ -239,13 +311,16 @@
     private CourseDto? course;
     private IEnumerable<ModuleDto> modules = new List<ModuleDto>();
     private IEnumerable<LessonDto> lessons = new List<LessonDto>();
+    private IEnumerable<LessonMaterialDto> materials = new List<LessonMaterialDto>();
     private CreateModuleDto newModule = new();
     private CreateLessonDto newLesson = new();
+    private CreateLessonMaterialDto newMaterial = new();
     private bool isLoading = true;
     private bool isEditingModule = false;
     private bool isEditingLesson = false;
     private Guid editingModuleId;
     private Guid editingLessonId;
+    private Guid currentLessonIdForMaterial;
 
     protected override async Task OnInitializedAsync()
     {
@@ -260,11 +335,21 @@
             modules = await ModuleService.GetModulesByCourseAsync(CourseId) ?? new List<ModuleDto>();
             
             var allLessons = new List<LessonDto>();
+            var allMaterials = new List<LessonMaterialDto>();
+            
             foreach (var m in modules) {
                 var moduleLessons = await LessonService.GetLessonsByModuleAsync(m.Id);
-                if (moduleLessons != null) allLessons.AddRange(moduleLessons);
+                if (moduleLessons != null) {
+                    allLessons.AddRange(moduleLessons);
+                    
+                    foreach (var lesson in moduleLessons) {
+                        var lessonMaterials = await MaterialService.GetMaterialsByLessonAsync(lesson.Id);
+                        if (lessonMaterials != null) allMaterials.AddRange(lessonMaterials);
+                    }
+                }
             }
             lessons = allLessons;
+            materials = allMaterials;
         } catch (Exception) { }
         isLoading = false;
     }
@@ -339,6 +424,29 @@
     private async Task DeleteLesson(Guid id) {
         if (await JSRuntime.InvokeAsync<bool>("confirm", "Deletar esta aula?")) {
             await LessonService.DeleteLessonAsync(id);
+            await LoadData();
+        }
+    }
+
+    private void ShowAddMaterialModal(Guid lessonId) {
+        currentLessonIdForMaterial = lessonId;
+        newMaterial = new() { LessonId = lessonId };
+        ShowModal("materialModal");
+    }
+
+    private void HideAddMaterialModal() => HideModal("materialModal");
+
+    private async Task SaveMaterial() {
+        if (!string.IsNullOrEmpty(newMaterial.Title) && !string.IsNullOrEmpty(newMaterial.MaterialUrl) && !string.IsNullOrEmpty(newMaterial.Type)) {
+            await MaterialService.CreateMaterialAsync(newMaterial);
+            await LoadData();
+            HideAddMaterialModal();
+        }
+    }
+
+    private async Task DeleteMaterial(Guid id) {
+        if (await JSRuntime.InvokeAsync<bool>("confirm", "Deletar este material?")) {
+            await MaterialService.DeleteMaterialAsync(id);
             await LoadData();
         }
     }
