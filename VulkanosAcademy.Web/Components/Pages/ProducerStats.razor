@@ -11,7 +11,7 @@
             <p class="text-muted">Acompanhe o desempenho e engajamento dos seus alunos</p>
         </div>
         <div class="col-auto">
-            <button class="btn btn-outline-primary" @onclick="() => Navigation.NavigateTo('/producer/dashboard')">
+            <button class="btn btn-outline-primary" @onclick="ProdDash">
                 <span class="bi bi-arrow-left me-2"></span> Voltar
             </button>
         </div>
@@ -144,6 +144,11 @@
     private IEnumerable<CourseDto>? courses;
     private List<CourseStatsDto>? courseStats = new();
     private bool isLoading = true;
+
+    private void ProdDash()
+    {
+        Navigation.NavigateTo("/producer/dashboard");
+    }
 
     protected override async Task OnInitializedAsync()
     {

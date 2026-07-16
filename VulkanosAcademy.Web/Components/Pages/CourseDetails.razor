@@ -21,7 +21,7 @@
             <span class="bi bi-exclamation-triangle me-2"></span>
             Curso não encontrado.
         </div>
-        <button class="btn btn-primary" @onclick="() => Navigation.NavigateTo('/dashboard')">Voltar para Dashboard</button>
+        <button class="btn btn-primary" @onclick="Dash">Voltar para Dashboard</button>
     }
     else
     {
@@ -170,7 +170,7 @@
                             <button class="btn btn-primary w-100 mb-2" @onclick="EnrollCourse">
                                 <span class="bi bi-plus-circle me-2"></span> MATRICULAR-SE
                             </button>
-                            <button class="btn btn-outline-secondary w-100" @onclick="() => Navigation.NavigateTo('/dashboard')">
+                            <button class="btn btn-outline-secondary w-100" @onclick="Dash">
                                 <span class="bi bi-arrow-left me-2"></span> Voltar
                             </button>
                         </div>
@@ -286,6 +286,11 @@
     private IEnumerable<LessonDto> lessons = new List<LessonDto>();
     private bool isLoading = true;
     private int totalLessons = 0;
+
+    private void Dash()
+    {
+        Navigation.NavigateTo("/dashboard");
+    }
 
     protected override async Task OnInitializedAsync()
     {

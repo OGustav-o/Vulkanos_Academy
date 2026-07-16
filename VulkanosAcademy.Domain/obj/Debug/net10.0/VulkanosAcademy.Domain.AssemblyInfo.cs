@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("VulkanosAcademy.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a3c50b2212618dc0e26c2f782872d8439f6b6749")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7a741fc925f724025e6db0b1140ef7b26603158b")]
 [assembly: System.Reflection.AssemblyProductAttribute("VulkanosAcademy.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("VulkanosAcademy.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
