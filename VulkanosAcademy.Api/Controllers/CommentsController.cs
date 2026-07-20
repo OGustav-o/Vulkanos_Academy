@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using VulkanosAcademy.Data;
 using VulkanosAcademy.Domain.DTOs;
 using VulkanosAcademy.Domain.Entities;
+using VulkanosAcademy.Api.Services;
 
 namespace VulkanosAcademy.Api.Controllers;
 
@@ -13,11 +14,13 @@ public class CommentsController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IGamificationService _gamificationService;
 
-    public CommentsController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
+    public CommentsController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor, IGamificationService gamificationService)
     {
         _context = context;
         _httpContextAccessor = httpContextAccessor;
+        _gamificationService = gamificationService;
     }
 
     /// <summary>
@@ -168,6 +171,9 @@ public class CommentsController : ControllerBase
 
         _context.Comments.Add(comment);
         await _context.SaveChangesAsync();
+
+        // Processar evento de gamificação para comentário postado
+        await _gamificationService.ProcessGamificationEventAsync(comment.UserId, "CommentPosted", comment.Id);
 
         var user = await _context.Users.FindAsync(userId);
         var commentDto = new CommentDto

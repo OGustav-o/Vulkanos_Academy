@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using VulkanosAcademy.Data;
 using VulkanosAcademy.Domain.DTOs;
 using VulkanosAcademy.Domain.Entities;
+using VulkanosAcademy.Api.Services;
 
 namespace VulkanosAcademy.Api.Controllers;
 
@@ -12,10 +13,12 @@ namespace VulkanosAcademy.Api.Controllers;
 public class EnrollmentsController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
+    private readonly IGamificationService _gamificationService;
 
-    public EnrollmentsController(ApplicationDbContext context)
+    public EnrollmentsController(ApplicationDbContext context, IGamificationService gamificationService)
     {
         _context = context;
+        _gamificationService = gamificationService;
     }
 
     /// <summary>
@@ -174,7 +177,14 @@ public class EnrollmentsController : ControllerBase
 
         // Se o progresso atingiu 100%, marcar como completo
         if (updateProgressDto.Progress >= 100)
-            enrollment.CompletionDate = DateTime.UtcNow;
+            {
+                enrollment.CompletionDate = DateTime.UtcNow;
+                // Processar evento de gamificação para conclusão de curso
+                await _gamificationService.ProcessGamificationEventAsync(enrollment.UserId, "CourseCompleted", enrollment.CourseId);
+            }
+            // Processar evento de gamificação para conclusão de aula (simplificado para cada atualização de progresso)
+            // Em um cenário real, isso seria mais granular, talvez por aula específica
+            await _gamificationService.ProcessGamificationEventAsync(enrollment.UserId, "LessonCompleted", enrollment.CourseId); // Usando CourseId como referência temporária para aula
 
         await _context.SaveChangesAsync();
 

@@ -16,6 +16,7 @@ builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<IModuleService, ModuleService>();
 builder.Services.AddScoped<ILessonService, LessonService>();
 builder.Services.AddScoped<IMaterialService, MaterialService>();
+builder.Services.AddScoped<IGamificationService, GamificationService>();
 
 // Add Authentication
 builder.Services.AddAuthorizationCore();

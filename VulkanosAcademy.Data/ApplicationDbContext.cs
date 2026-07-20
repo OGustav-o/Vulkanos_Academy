@@ -17,6 +17,10 @@ public class ApplicationDbContext : DbContext
     public DbSet<Comment> Comments { get; set; }
     public DbSet<Enrollment> Enrollments { get; set; }
     public DbSet<Certificate> Certificates { get; set; }
+    public DbSet<UserProfile> UserProfiles { get; set; }
+    public DbSet<GamificationEvent> GamificationEvents { get; set; }
+    public DbSet<Badge> Badges { get; set; }
+    public DbSet<UserBadge> UserBadges { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -109,5 +113,50 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<Certificate>()
             .HasIndex(c => c.EnrollmentId)
             .IsUnique();
+
+        // UserProfile configuration
+        modelBuilder.Entity<UserProfile>()
+            .HasKey(up => up.UserId);
+        modelBuilder.Entity<UserProfile>()
+            .HasOne(up => up.User)
+            .WithOne()
+            .HasForeignKey<UserProfile>(up => up.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        // GamificationEvent configuration
+        modelBuilder.Entity<GamificationEvent>()
+            .HasKey(ge => ge.Id);
+        modelBuilder.Entity<GamificationEvent>()
+            .HasOne(ge => ge.User)
+            .WithMany(u => u.GamificationEvents)
+            .HasForeignKey(ge => ge.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        // Badge configuration
+        modelBuilder.Entity<Badge>()
+            .HasKey(b => b.Id);
+
+        // UserBadge configuration
+        modelBuilder.Entity<UserBadge>()
+            .HasKey(ub => ub.Id);
+        modelBuilder.Entity<UserBadge>()
+            .HasOne(ub => ub.User)
+            .WithMany(u => u.UserBadges)
+            .HasForeignKey(ub => ub.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+        modelBuilder.Entity<UserBadge>()
+            .HasOne(ub => ub.Badge)
+            .WithMany(b => b.UserBadges)
+            .HasForeignKey(ub => ub.BadgeId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        // Seed initial badges
+        modelBuilder.Entity<Badge>().HasData(
+            new Badge { Id = Guid.NewGuid(), Name = "Primeiros Passos", Description = "Concluiu a primeira aula", IconUrl = "/images/badges/first_step.png", BadgeType = "Milestone" },
+            new Badge { Id = Guid.NewGuid(), Name = "Maratonista", Description = "Concluiu 5 aulas no mesmo dia", IconUrl = "/images/badges/marathon.png", BadgeType = "Milestone" },
+            new Badge { Id = Guid.NewGuid(), Name = "Comunicativo", Description = "Fez 10 comentários", IconUrl = "/images/badges/communicator.png", BadgeType = "Social" },
+            new Badge { Id = Guid.NewGuid(), Name = "Graduado", Description = "Concluiu o primeiro curso", IconUrl = "/images/badges/graduate.png", BadgeType = "Completion" },
+            new Badge { Id = Guid.NewGuid(), Name = "Colecionador", Description = "Obteve 3 certificados", IconUrl = "/images/badges/collector.png", BadgeType = "Completion" }
+        );
     }
 }
